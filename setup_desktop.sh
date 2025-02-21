@@ -8,6 +8,7 @@ DOTFILES_DIR="$HOME/.dotfiles"
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
 sudo rm -rf /opt/nvim
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+mv /opt/nvim-linux-x86_64 /opt/nvim-linux64
 
 # wezterm
 sudo apt install -y gnome-software-plugin-flatpak
@@ -25,6 +26,6 @@ for dir in "$DOTFILES_DIR"/*/; do
     stow $dir_name
 done
 
-#.bashrc
+# .bashrc
 mv ~/.bashrc ~/bashrc.backup
 ln -s ~/.dotfiles/.bashrc ~/.bashrc
