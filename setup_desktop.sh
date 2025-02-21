@@ -9,12 +9,17 @@ curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x8
 sudo rm -rf /opt/nvim
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 sudo ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+    ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 # wezterm
 sudo apt install -y gnome-software-plugin-flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 flatpak install flathub org.wezfurlong.wezterm
+
+
+ln -s $DOTFILES_DIR/scripts ~/scripts
 
 for dir in "$DOTFILES_DIR"/*/; do
     dir_name=$(basename "$dir")
