@@ -14,7 +14,6 @@ sudo apt install -y gnome-software-plugin-flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 flatpak install flathub org.wezfurlong.wezterm
-flatpak run org.wezfurlong.wezterm
 
 for dir in "$DOTFILES_DIR"/*/; do
     dir_name=$(basename "$dir")
