@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install -y feh fzf stow tmux flatpak
+sudo apt install -y feh fzf stow tmux flatpak curl
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
@@ -10,6 +10,9 @@ sudo rm -rf /opt/nvim
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
 # wezterm
+sudo apt install -y gnome-software-plugin-flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
 flatpak install flathub org.wezfurlong.wezterm
 flatpak run org.wezfurlong.wezterm
 
