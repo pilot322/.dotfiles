@@ -8,7 +8,7 @@ DOTFILES_DIR="$HOME/.dotfiles"
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
 sudo rm -rf /opt/nvim
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-mv /opt/nvim-linux-x86_64 /opt/nvim-linux64
+sudo ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 
 # wezterm
 sudo apt install -y gnome-software-plugin-flatpak
