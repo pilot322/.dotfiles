@@ -14,7 +14,8 @@ dirs=(
 )
 
 # Select directory
-selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)
+selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 \( -type d -o \( -type l -a -xtype d \) \) | fzf)
+
 
 # Debug output
 echo "Selected directory: $selected"
