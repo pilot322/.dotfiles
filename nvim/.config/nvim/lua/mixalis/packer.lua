@@ -1,5 +1,3 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
-
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
@@ -82,13 +80,21 @@ return require('packer').startup(function(use)
     })
     use({
         "epwalsh/obsidian.nvim",
-        tag = "*", -- recommended, use latest release instead of latest commit
+        tag = "*",
         requires = {
-            -- Required.
             "nvim-lua/plenary.nvim",
-
-            -- see below for full list of optional dependencies 👇
         },
     })
     use('tpope/vim-surround')
+
+    use('adalessa/laravel.nvim')
+    use 'jwalton512/vim-blade'
+    use 'jose-elias-alvarez/null-ls.nvim'
+    use { 'hrsh7th/nvim-cmp',
+        config = function()
+            require("nvim-cmp-laravel").setup()
+        end
+    }
+
+    use "adoolaard/nvim-cmp-laravel"
 end)

@@ -46,7 +46,7 @@ require('lspconfig').html.setup {
 require('lspconfig').cssls.setup {
     filetypes = { "css", "scss", "less" },
 }
-lspconf = require'lspconfig'
+lspconf = require 'lspconfig'
 require('lspconfig').tailwindcss.setup({
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
@@ -62,8 +62,14 @@ lspconf.yamlls.setup {}
 
 lspconf.pylsp.setup {}
 
-vim.opt.shiftwidth = 4  -- Indent size
-vim.opt.tabstop = 4     -- Number of spaces for a tab
-vim.opt.expandtab = true  -- Converts tabs to spaces
+vim.opt.shiftwidth = 4   -- Indent size
+vim.opt.tabstop = 4      -- Number of spaces for a tab
+vim.opt.expandtab = true -- Converts tabs to spaces
 
-lspconf.intelephense.setup{}
+lspconf.intelephense.setup {
+    settings = {
+        intelephense = {
+            stubs = { "blade" } -- This is illustrative; check the intelephense docs for any Blade-specific settings.
+        }
+    },
+}

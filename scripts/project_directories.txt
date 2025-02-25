@@ -1,9 +1,7 @@
 ~/
 ~/Documents
-~/Documents/Ergasies
-~/Documents/DOYLEIA
-~/Documents/Code
-~/Documents/Mathimata
+~/Documents/Test
+~/Documents/Test/Laravel
 ~/Documents/Projects
 ~/Documents/Vaults
 ~/.config
