@@ -1,7 +1,5 @@
 local wezterm = require 'wezterm'
 
-
-
 return {
   scrollback_lines = 10000,
   window_background_opacity = 0.75, -- Adjust this value (0.0 to 1.0) for desired transparency
@@ -9,7 +7,7 @@ return {
     {
       key = 'f',
       mods = 'CTRL',
-      action = wezterm.action { SpawnCommandInNewTab = { cwd = os.getenv('HOME'), args = { 'bash', '-c', '~/scripts/open_project.sh' } } }
+      action = wezterm.action { SpawnCommandInNewTab = { cwd = os.getenv('HOME'), args = { 'bash', '-c', '~/.dotfiles/scripts/open_project.sh' } } }
     },
     {
       key = 'Backspace',
