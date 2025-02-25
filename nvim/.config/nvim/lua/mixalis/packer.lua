@@ -10,6 +10,12 @@ return require('packer').startup(function(use)
         -- or                            , branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
+
+    use {
+        "nvim-telescope/telescope-file-browser.nvim",
+        requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    }
+
     use({
         'rose-pine/neovim',
         as = "rose-pine",
@@ -86,9 +92,7 @@ return require('packer').startup(function(use)
         },
     })
     use('tpope/vim-surround')
-
-    use('adalessa/laravel.nvim')
-    use 'jwalton512/vim-blade'
+    -- use 'jwalton512/vim-blade'
     use 'jose-elias-alvarez/null-ls.nvim'
     use { 'hrsh7th/nvim-cmp',
         config = function()

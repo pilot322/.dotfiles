@@ -6,10 +6,11 @@ cmp.setup({
         { name = 'nvim_lsp' },
         { name = 'buffer' },
         { name = 'render-markdown' },
+        { name = 'luasnip' },
     },
     snippet = {
         expand = function(args)
-            vim.snippet.expand(args.body)
+            require'luasnip'.lsp_expand(args.body)
         end,
     },
     formatting = {

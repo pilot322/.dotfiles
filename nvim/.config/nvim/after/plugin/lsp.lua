@@ -40,7 +40,7 @@ require('lspconfig').jdtls.setup {
 }
 
 require('lspconfig').html.setup {
-    filetypes = { "html", "htm" },
+    filetypes = { "html", "htm", "blade" },
 }
 
 require('lspconfig').cssls.setup {
