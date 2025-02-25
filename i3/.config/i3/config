@@ -206,7 +206,7 @@ bar {
 }
 new_window none
 
-exec --no-startup-id ~/.config/i3/setup_displays.sh
+exec --no-startup-id ~/profile_scripts/setup_displays.sh
 exec --no-startup-id wezterm
 exec --no-startup-id setxkbmap -layout us,gr -option grp:alt_shift_toggle
 

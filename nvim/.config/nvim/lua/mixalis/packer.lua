@@ -99,6 +99,23 @@ return require('packer').startup(function(use)
             require("nvim-cmp-laravel").setup()
         end
     }
+    use ("adoolaard/nvim-cmp-laravel")
 
-    use "adoolaard/nvim-cmp-laravel"
+    use {
+        "adalessa/laravel.nvim",
+        requires = {
+            "tpope/vim-dotenv",
+            "nvim-telescope/telescope.nvim",
+            "MunifTanjim/nui.nvim",
+            "kevinhwang91/promise-async",
+            'nvim-lua/plenary.nvim',
+
+        },
+    }
+    use {
+        'windwp/nvim-autopairs',
+        config = function()
+            require('nvim-autopairs').setup()
+        end
+    }
 end)
