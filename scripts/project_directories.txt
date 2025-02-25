@@ -1,0 +1,9 @@
+~/
+~/Documents
+~/Documents/Ergasies
+~/Documents/DOYLEIA
+~/Documents/Code
+~/Documents/Mathimata
+~/Documents/Projects
+~/Documents/Vaults
+~/.config

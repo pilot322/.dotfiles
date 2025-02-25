@@ -1,17 +1,8 @@
 #!/bin/bash
 
-# Define directories
-dirs=(
-  ~/
-  ~/Documents 
-  ~/Documents/Ergasies
-  ~/Documents/DOYLEIA
-  ~/Documents/Code
-  ~/Documents/Mathimata
-  ~/Documents/Projects
-  ~/Documents/Vaults
-  ~/.config
-)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DIRS_FILE="$SCRIPT_DIR/project_directories.txt"
+mapfile -t dirs < <(sed 's|~|'$HOME'|' $DIRS_FILE)
 
 # Select directory
 selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 \( -type d -o \( -type l -a -xtype d \) \) | fzf)
@@ -28,4 +19,6 @@ if [[ -n "$selected" ]]; then
   tmux new-session -A -s "$session_name" -c "$selected"
 else
   echo "No directory selected!"
+  read -p "Press enter to exit"
 fi
+

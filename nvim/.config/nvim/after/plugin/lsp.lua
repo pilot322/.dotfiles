@@ -65,3 +65,5 @@ lspconf.pylsp.setup {}
 vim.opt.shiftwidth = 4  -- Indent size
 vim.opt.tabstop = 4     -- Number of spaces for a tab
 vim.opt.expandtab = true  -- Converts tabs to spaces
+
+lspconf.intelephense.setup{}

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install -y feh fzf stow tmux flatpak rclone curl
+sudo apt install -y feh fzf stow tmux rclone curl
 
 DOTFILES_DIR="$HOME/.dotfiles"
 

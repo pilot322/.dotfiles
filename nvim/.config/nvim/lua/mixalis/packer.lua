@@ -90,4 +90,5 @@ return require('packer').startup(function(use)
             -- see below for full list of optional dependencies 👇
         },
     })
+    use('tpope/vim-surround')
 end)
