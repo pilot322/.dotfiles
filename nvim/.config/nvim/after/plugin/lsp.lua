@@ -81,8 +81,22 @@ lspconf.intelephense.setup {
                 "snmp", "soap", "sockets", "sodium", "SPL", "sqlite3",
                 "standard", "superglobals", "sysvmsg", "sysvsem", "sysvshm",
                 "tidy", "tokenizer", "xml", "xmlreader", "xmlrpc", "xmlwriter",
-                "xsl", "Zend OPcache", "zip", "zlib"
+                "xsl", "Zend OPcache", "zip", "zlib", "laravel", "eloquent","laravel-eloquent", "laravel-collections"
+            },
+            files = {
+                -- Point to your IDE helper files
+                maxSize = 10000000,
+                associations = {
+                    "*.php", "*.phtml", "*.inc", "*.module", "*.install", "*.theme"
+                },
+                include = {
+                    vim.fn.getcwd() .. "/_ide_helper.php",
+                    vim.fn.getcwd() .. "/_ide_helper_models.php",
+                    vim.fn.getcwd() .. "/.phpstorm.meta.php",
+                }
             }
         }
+
     },
+
 }
