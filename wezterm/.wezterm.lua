@@ -10,6 +10,11 @@ return {
       action = wezterm.action { SpawnCommandInNewTab = { cwd = os.getenv('HOME'), args = { 'bash', '-c', '~/.dotfiles/scripts/open_project.sh' } } }
     },
     {
+      key = 'v',
+      mods = 'CTRL|ALT',
+      action = wezterm.action { SpawnCommandInNewTab = { cwd = os.getenv('HOME'), args = { 'bash', '-c', '~/.dotfiles/scripts/open_vaults.sh' } } }
+    },
+    {
       key = 'Backspace',
       mods = 'CTRL',
       action = wezterm.action { SendString = '\x1b\x7f' },  -- Sends the correct escape sequence
