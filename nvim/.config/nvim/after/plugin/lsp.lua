@@ -60,7 +60,17 @@ require('lspconfig').ts_ls.setup {}
 lspconf.yamlls.setup {}
 
 
-lspconf.pylsp.setup {}
+lspconf.pylsp.setup {
+    settings = {
+    pylsp = {
+      configurationSources = {"flake8"},
+      plugins = {
+        flake8 = {enabled = true},
+        pycodestyle = {enabled = false},
+      }
+    }
+  }
+}
 
 vim.opt.shiftwidth = 4   -- Indent size
 vim.opt.tabstop = 4      -- Number of spaces for a tab
@@ -100,3 +110,8 @@ lspconf.intelephense.setup {
     },
 
 }
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "sh",
+  command = "setlocal omnifunc=sh_omni",
+})

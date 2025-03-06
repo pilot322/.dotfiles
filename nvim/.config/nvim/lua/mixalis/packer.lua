@@ -20,7 +20,7 @@ return require('packer').startup(function(use)
         'rose-pine/neovim',
         as = "rose-pine",
         config = function()
-            vim.cmd('colorscheme rose-pine-moon')
+--            vim.cmd('colorscheme rose-pine-moon')
         end
     })
 
@@ -118,4 +118,5 @@ return require('packer').startup(function(use)
             require('nvim-autopairs').setup()
         end
     }
+    use "lewis6991/gitsigns.nvim"
 end)

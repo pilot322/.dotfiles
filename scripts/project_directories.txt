@@ -3,4 +3,5 @@
 ~/Documents/Test
 ~/Documents/Test/Laravel
 ~/Documents/Projects
+~/Documents/Vaults
 ~/.config

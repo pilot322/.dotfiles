@@ -4,23 +4,27 @@ local function is_in_vaults()
 end
 
 if is_in_vaults() then
+    vim.opt.conceallevel = 1
     require("obsidian").setup({
+        ui = {
+            enable = true,
+        },
         workspaces = {
             {
                 name = "Notes",
-                path = "/mnt/Vaults/Notes/",
-            },
-            {
-                name = "School",
-                path = "/mnt/Vaults/School2.0",
-            },
-            {
-                name = "CodingAcademy",
-                path = "/mnt/Vaults/CodingAcademy",
+                path = "~/Documents/Vaults/Notes/",
             },
             {
                 name = "InDigital",
-                path = "/mnt/Vaults/InDigital",
+                path = "~/Documents/Vaults/InDigital",
+            },
+            {
+                name = "School",
+                path = "~/Documents/Vaults/School2.0",
+            },
+            {
+                name = "CodingAcademy",
+                path = "~/Documents/Vaults/CodingAcademy",
             },
         }
     })
