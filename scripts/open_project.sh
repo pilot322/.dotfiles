@@ -17,8 +17,5 @@ if [[ -n "$selected" ]]; then
   echo "Opening tmux session for: $session_name"
   tmux detach
   tmux new-session -A -s "$session_name" -c "$selected"
-else
-  echo "No directory selected!"
-  read -p "Press enter to exit"
 fi
 
