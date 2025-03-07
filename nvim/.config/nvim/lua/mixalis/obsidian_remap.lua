@@ -22,4 +22,6 @@
     --vim.cmd(command)
 --end, { noremap = true, silent = true, desc = 'Run terminal command with current directory' })
 
-vim.keymap.set('n', '<leader>obsu', '!git add . && git commit -m "ok" && git push')
+vim.keymap.set('n', '<leader>obsu', ':!git add . && git commit -m "ok" && git push<CR>')
+vim.keymap.set('n', '<leader>obsd', ':!git pull<CR>')
+vim.keymap.set('n', '<leader>obst', ':!echo test<CR>')
