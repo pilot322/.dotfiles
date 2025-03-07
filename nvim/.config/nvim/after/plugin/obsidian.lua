@@ -15,8 +15,8 @@ if is_in_vaults() then
                 path = "~/Documents/Vaults/Notes/",
             },
             {
-                name = "InDigital",
-                path = "~/Documents/Vaults/InDigital",
+                name = "INNotes",
+                path = "~/Documents/Vaults/INNotes",
             },
             {
                 name = "School",
