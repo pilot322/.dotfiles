@@ -1,8 +1,11 @@
 #!/bin/bash
 
-sudo apt install -y feh fzf stow tmux rclone curl
+sudo apt install -y feh fzf stow tmux rclone curl ripgrep
 
 DOTFILES_DIR="$HOME/.dotfiles"
+
+#pyenv
+curl -fsSL https://pyenv.run | bash
 
 # nvim
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
