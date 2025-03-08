@@ -1,7 +1,8 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DIRS_FILE="$SCRIPT_DIR/project_directories.txt"
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#DIRS_FILE="$SCRIPT_DIR/project_directories.txt"
+DIRS_FILE="$HOME/personal_scripts/project_directories.txt"
 mapfile -t dirs < <(sed 's|~|'$HOME'|' $DIRS_FILE)
 
 # Select directory
