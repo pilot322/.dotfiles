@@ -29,3 +29,12 @@ if is_in_vaults() then
         }
     })
 end
+
+vim.keymap.set('n', '<leader>obsu', ':!git add . && git commit -m "ok" && git push<CR>')
+vim.keymap.set('n', '<leader>obsd', ':!git pull<CR>')
+vim.keymap.set('n', '<leader>obst', ':!echo test<CR>')
+
+vim.keymap.set("n", "<leader>obt", function()
+    require("obsidian").util.toggle_checkbox()
+end, { desc = "Toggle Obsidian Todo" })
+
