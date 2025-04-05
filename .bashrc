@@ -142,3 +142,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 eval "$(pyenv init - bash)"
 
 # google-drive-ocamlfuse /mnt/Vaults > /dev/null 2>&1
+
+if [ -f "${HOME}/.bashrc_local" ]; then
+    source "${HOME}/.bashrc_local"
+fi

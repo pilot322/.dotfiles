@@ -62,14 +62,14 @@ lspconf.yamlls.setup {}
 
 lspconf.pylsp.setup {
     settings = {
-    pylsp = {
-      configurationSources = {"flake8"},
-      plugins = {
-        flake8 = {enabled = true},
-        pycodestyle = {enabled = false},
-      }
+        pylsp = {
+            configurationSources = { "flake8" },
+            plugins = {
+                flake8 = { enabled = true },
+                pycodestyle = { enabled = false },
+            }
+        }
     }
-  }
 }
 
 vim.opt.shiftwidth = 4   -- Indent size
@@ -91,7 +91,7 @@ lspconf.intelephense.setup {
                 "snmp", "soap", "sockets", "sodium", "SPL", "sqlite3",
                 "standard", "superglobals", "sysvmsg", "sysvsem", "sysvshm",
                 "tidy", "tokenizer", "xml", "xmlreader", "xmlrpc", "xmlwriter",
-                "xsl", "Zend OPcache", "zip", "zlib", "laravel", "eloquent","laravel-eloquent", "laravel-collections"
+                "xsl", "Zend OPcache", "zip", "zlib", "laravel", "eloquent", "laravel-eloquent", "laravel-collections"
             },
             files = {
                 -- Point to your IDE helper files
@@ -112,8 +112,8 @@ lspconf.intelephense.setup {
 }
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "sh",
-  command = "setlocal omnifunc=sh_omni",
+    pattern = "sh",
+    command = "setlocal omnifunc=sh_omni",
 })
 
 lspconf.jsonls.setup({})

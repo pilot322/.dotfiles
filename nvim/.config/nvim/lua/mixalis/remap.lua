@@ -1,5 +1,6 @@
 vim.opt.langmap = 'αa,βb,γg,δd,εe,ζz,ηh,θu,ιi,κk,λl,μm,νn,ξj,οo,πp,ρr,σs,τt,υy,φf,χx,ψc,ωV,ςw,ΑA,ΒB,ΓG,ΔD,ΕE,ΖZ,ΗH,ΘU,ΙI,ΚK,ΛL,ΜM,ΝN,ΞJ,ΟO,ΠP,ΡR,ΣS,ΤT,ΥY,ΦF,ΧX,ΨC,ΩV,ΣW'
 
+
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 

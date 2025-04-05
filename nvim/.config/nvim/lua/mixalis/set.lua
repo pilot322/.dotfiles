@@ -30,9 +30,9 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 print('what')
 -- vim.opt.colorcolumn = "80"
-vim.cmd [[colorscheme rose-pine-moon]]
-vim.cmd [[highlight Normal ctermbg=none guibg=none]]
-vim.cmd [[highlight ColorColumn ctermbg=none guibg=none]]
+-- vim.cmd [[colorscheme rose-pine-moon]]
+-- vim.cmd [[highlight Normal ctermbg=none guibg=none]]
+-- vim.cmd [[highlight ColorColumn ctermbg=none guibg=none]]
 
 
 vim.opt.clipboard:append("unnamedplus")
