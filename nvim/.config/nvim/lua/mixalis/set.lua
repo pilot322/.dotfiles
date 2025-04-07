@@ -1,5 +1,7 @@
 vim.opt.guicursor = ""
 
+vim.opt.conceallevel = 1
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 

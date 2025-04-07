@@ -203,25 +203,41 @@ return {
             })
         end,
     },
-
-    -- Markdown
     {
-        "MeanderingProgrammer/render-markdown.nvim",
-        ft = "markdown", -- Load only for markdown files
-        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-        config = function()
-            require('render-markdown').setup({})
-            vim.g.mkdp_enable_html = 1 -- This seems related to a different markdown previewer (vim-markdown-preview)? Check if needed for render-markdown.
-        end,
-    },
-    {
+        -- Markdown
         "epwalsh/obsidian.nvim",
-        version = "*",      -- Use version = "*" for tag = "*"
-        -- lazy = true, -- Can be lazy-loaded
-        event = "VeryLazy", -- Or ft = "markdown"
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
+        version = "*", -- recommended, use latest release instead of latest commit
+        lazy = true,
+        ft = "markdown",
+        -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+        -- event = {
+        --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+        --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+        --   -- refer to `:h file-pattern` for more examples
+        --   "BufReadPre path/to/my-vault/*.md",
+        --   "BufNewFile path/to/my-vault/*.md",
+        -- },
+        dependencies = {
+            -- Required.
+            "nvim-lua/plenary.nvim",
 
+            -- see below for full list of optional dependencies 👇
+        },
+        opts = {
+            workspaces = {
+                {
+                    name = "INNotes",
+                    path = "~/Vaults/INNotes",
+                },
+                {
+                    name = "Notes",
+                    path = "~/Vaults/obsnotes",
+                },
+            },
+        }
+
+        -- see below for full list of options 👇
+    },
     -- Laravel Specific
     {
         "adalessa/laravel.nvim",
@@ -245,18 +261,7 @@ return {
     { "kevinhwang91/promise-async", lazy = true },        -- Dependency for laravel.nvim
 
     -- AI / Avante
-    { "stevearc/dressing.nvim",     event = "VeryLazy" },   -- UI enhancement, load late
-    { "HakonHarnes/img-clip.nvim",  cmd = "ImgClipPaste" }, -- Load on command
-    {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter", -- Or just cmd
-        config = function()
-            require("copilot").setup({
-                -- your copilot config
-            })
-        end,
-    },
+    --{ "HakonHarnes/img-clip.nvim",  cmd = "ImgClipPaste" }, -- Load on command
     --  {
     --      "yetone/avante.nvim",
     --      event = "VeryLazy",

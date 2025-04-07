@@ -1,4 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+require('mixalis')
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
         "git",
@@ -11,7 +13,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('mixalis')
 
 -- Setup lazy.nvim and load plugin configurations
 require("lazy").setup("plugins", {
