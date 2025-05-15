@@ -56,3 +56,23 @@ end)
 vim.keymap.set("n", "<leader>wr", function()
   vim.cmd("set wrap")
 end, { noremap = true, silent = true, desc = "Word wrap" })
+
+vim.keymap.set("n", "<leader>bs", function()
+  local current = vim.opt.showtabline:get()
+  if current == 0 then
+    vim.opt.showtabline = 2
+    vim.g.bufferline_enabled = true
+  else
+    vim.opt.showtabline = 0
+    vim.g.bufferline_enabled = false
+  end
+end)
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter" }, {
+  group = vim.api.nvim_create_augroup("BufferlineState", { clear = true }),
+  callback = function()
+    if vim.g.bufferline_enabled == false then
+      vim.o.showtabline = 0
+    end
+  end,
+})
