@@ -76,3 +76,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "Buf
     end
   end,
 })
+
+vim.keymap.set("n", "<leader>f.e", ":e .env<CR>", { desc = "Open .env file" })
+vim.keymap.set("n", "<leader>f.g", ":e .gitignore<CR>", { desc = "Open .gitignore file" })
