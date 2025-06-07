@@ -29,6 +29,19 @@ return {
 			mods = "CTRL",
 			action = wezterm.action({ SendString = "\x1b\x7f" }), -- Sends the correct escape sequence
 		},
+		{
+			key = "q",
+			mods = "CTRL",
+			action = wezterm.action({
+				SpawnCommandInNewTab = {
+					args = { "bash", "-c", "source ~/.bashrc; ~/scripts/quick_question.sh" },
+				},
+				-- set_environment_variables = {
+				-- 	DISPLAY = ":0",
+				-- 	PATH = os.getenv("PATH"),
+				-- },
+			}),
+		},
 	},
 	font_size = 16,
 }

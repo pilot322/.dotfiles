@@ -154,3 +154,5 @@ function y() {
     [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
     rm -f -- "$tmp"
 }
+
+[[ -s "/home/mixalis/.gvm/scripts/gvm" ]] && source "/home/mixalis/.gvm/scripts/gvm"
