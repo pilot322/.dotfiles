@@ -147,6 +147,8 @@ if [ -f "${HOME}/.bashrc_local" ]; then
 fi
 . "$HOME/.cargo/env"
 
+export PATH="$PATH:~/scripts"
+
 function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
     yazi "$@" --cwd-file="$tmp"
@@ -156,3 +158,7 @@ function y() {
 }
 
 [[ -s "/home/mixalis/.gvm/scripts/gvm" ]] && source "/home/mixalis/.gvm/scripts/gvm"
+eval "$(zoxide init bash)"
+
+export SSH_TERAS=administrator@172.20.0.145
+export SSH_DAN=administrator@172.20.0.121
