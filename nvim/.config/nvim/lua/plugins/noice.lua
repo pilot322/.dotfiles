@@ -1,5 +1,5 @@
 return {
 
   "folke/noice.nvim",
-  enabled = true,
+  enabled = false,
 }

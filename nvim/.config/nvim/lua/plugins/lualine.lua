@@ -1,8 +1,10 @@
 return {
+  enabled = false,
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
   init = function()
-    vim.g.lualine_laststatus = vim.o.laststatus
+    vim.opt.laststatus = 3
+    vim.g.lualine_laststatus = vim.opt.laststatus
     if vim.fn.argc(-1) > 0 then
       -- set an empty statusline till lualine loads
       vim.o.statusline = " "
