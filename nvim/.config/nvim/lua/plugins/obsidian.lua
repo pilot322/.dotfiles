@@ -27,6 +27,10 @@ return {
         name = "work",
         path = "~/Vaults/INNotes/",
       },
+      {
+        name = "content",
+        path = "~/Vaults/Content/",
+      },
     },
 
     -- see below for full list of options 👇

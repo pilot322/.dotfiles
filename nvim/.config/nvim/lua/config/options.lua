@@ -33,3 +33,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.g.snacks_animate = false
+
+vim.opt.showmode = true
+vim.opt.cursorline = false
+vim.g.autoformat = false
