@@ -34,6 +34,8 @@ vim.opt.updatetime = 50
 
 vim.g.snacks_animate = false
 
+vim.g.snacks_explorer = false
+
 vim.opt.showmode = true
 vim.opt.cursorline = false
 vim.g.autoformat = false

@@ -140,8 +140,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - bash)"
 
-# google-drive-ocamlfuse /mnt/Vaults > /dev/null 2>&1
-
 if [ -f "${HOME}/.bashrc_local" ]; then
     source "${HOME}/.bashrc_local"
 fi
@@ -162,3 +160,7 @@ eval "$(zoxide init bash)"
 
 export SSH_TERAS=administrator@172.20.0.145
 export SSH_DAN=administrator@172.20.0.121
+
+if [ -f "$HOME/.env_vars" ]; then
+    . "$HOME/.env_vars"
+fi
