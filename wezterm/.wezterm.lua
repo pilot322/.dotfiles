@@ -4,19 +4,25 @@ return {
 	scrollback_lines = 10000,
 	window_background_opacity = 0.75, -- Adjust this value (0.0 to 1.0) for desired transparency
 	keys = {
-
+		{
+			key = "t",
+			mods = "CTRL",
+			action = wezterm.action({
+				SpawnCommandInNewTab = ({ cwd = os.getenv("HOME") }),
+			}),
+		},
 		{
 			key = "9",
 			mods = "CTRL",
 			action = wezterm.action({
-                ActivateTabRelative=-1
+				ActivateTabRelative = -1,
 			}),
 		},
 		{
 			key = "0",
 			mods = "CTRL",
 			action = wezterm.action({
-                ActivateTabRelative=1
+				ActivateTabRelative = 1,
 			}),
 		},
 		{
