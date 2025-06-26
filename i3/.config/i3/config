@@ -155,8 +155,8 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
-bindsym XF86MonBrightnessUp exec brightnessctl -d amdgpu_bl1 set +10%
-bindsym XF86MonBrightnessDown exec brightnessctl -d amdgpu_bl1 set 10%-
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -169,6 +169,7 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -214,7 +215,6 @@ bar {
 new_window none
 
 exec --no-startup-id ~/profile_scripts/setup_displays.sh
-exec --no-startup-id wezterm
 exec --no-startup-id setxkbmap -layout us,gr -option grp:alt_shift_toggle -option caps:swapescape
 
 exec --no-startup-id picom
@@ -222,3 +222,9 @@ exec --no-startup-id picom
 
 
 assign [class="main.py"] $ws9
+
+# stacking workspaces
+
+exec --no-startup-id "i3-msg 'workspace 1; exec wezterm;'"
+exec --no-startup-id "i3-msg 'workspace 2; layout tabbed; exec firefox;'"
+exec --no-startup-id "i3-msg 'workspace 3; layout tabbed; exec nemo;'"
