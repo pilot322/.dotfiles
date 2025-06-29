@@ -15,22 +15,6 @@ return {
     colors = {
         tab_bar = {
             background = 'rgba(0, 0, 0, 0.75)',
-
-            -- Active Tab Colors
-            active_tab_bg_color = 'none',   -- Makes background transparent
-            active_tab_fg_color = '#f5c2e7', -- Bright Pink text
-
-            -- Inactive Tab Colors
-            inactive_tab_bg_color = 'none', -- Makes background transparent
-            inactive_tab_fg_color = '#6c7086', -- Muted Gray text
-
-            -- New Tab Button Colors
-            new_tab_bg_color = 'none',      -- Makes background transparent
-            new_tab_fg_color = '#6c7086',      -- Muted Gray text
-
-            -- NOTE: Underline and Bold styles for tabs are not supported
-            -- in this older configuration format. You must update Wezterm
-            -- to a newer version to get those features.
         },
     },
     font_size = 16,
