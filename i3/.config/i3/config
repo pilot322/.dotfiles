@@ -80,9 +80,9 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-for_window [class=".*"] border pixel 1
+for_window [class=".*"] border pixel 0
 
-client.focused #00ff00 #00ff00 #00ff00 #00ff00
+client.focused #f71e6d #f71e6d #f71e6d #f71e6d
 
 # move focused window
 bindsym $mod+Shift+j move left
@@ -156,7 +156,7 @@ bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
 bindsym XF86MonBrightnessUp exec brightnessctl set +10%
-bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
