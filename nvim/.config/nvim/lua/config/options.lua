@@ -39,3 +39,10 @@ vim.g.snacks_explorer = false
 vim.opt.showmode = true
 vim.opt.cursorline = false
 vim.g.autoformat = false
+
+vim.opt.spell = false
+
+-- netrw tricks
+vim.g.netrw_rm_cmd = 'trash-put'
+vim.g.netrw_rmf_cmd = 'trash-put'
+vim.g.netrw_rmdir_cmd = 'trash-put'

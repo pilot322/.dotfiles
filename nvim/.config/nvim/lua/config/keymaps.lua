@@ -53,8 +53,8 @@ vim.keymap.set("n", "<leader><leader>", function()
 end)
 
 vim.keymap.set("n", "<leader>wr", function()
-  vim.cmd("set wrap")
-end, { noremap = true, silent = true, desc = "Word wrap" })
+  vim.opt.wrap = not vim.opt.wrap:get()
+end, { noremap = true, silent = true, desc = "Toggle word wrap" })
 
 vim.keymap.set("n", "<leader>bs", function()
   local current = vim.opt.showtabline:get()
