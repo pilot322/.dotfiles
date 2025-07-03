@@ -211,6 +211,11 @@ bar {
         status_command i3status
 
         font pango:monospace 10
+        colors {
+            background #222222CC  # Dark grey, 80% opaque (20% transparent)
+            statusline #ddddddCC    # You can make this transparent too if you wish, e.g. #ddddddCC
+            # ... other colors
+        }
 }
 new_window none
 
@@ -219,7 +224,8 @@ exec --no-startup-id setxkbmap -layout us,gr -option grp:alt_shift_toggle -optio
 
 exec --no-startup-id picom
 
-
+gaps inner 10
+gaps outer 10
 
 assign [class="main.py"] $ws9
 
@@ -227,4 +233,4 @@ assign [class="main.py"] $ws9
 
 exec --no-startup-id "i3-msg 'workspace 1; exec wezterm;'"
 exec --no-startup-id "i3-msg 'workspace 2; layout tabbed; exec firefox;'"
-exec --no-startup-id "i3-msg 'workspace 3; layout tabbed; exec nemo;'"
+exec --no-startup-id "i3-msg 'workspace 3; layout tabbed; exec nautilus;'"

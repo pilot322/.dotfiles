@@ -51,7 +51,7 @@ return {
             -- SendString "types" the command into the current pane and hits Enter.
             -- The shell will expand `~` correctly. The `\r` is the carriage return (Enter key).
             action = wezterm.action({
-                SendString = "\x02d\x08\x08\x08\r~/.dotfiles/scripts/open_project.sh\r",
+                SendString = "\x01d\x08\x08\x08\r~/.dotfiles/scripts/open_project.sh\r",
             }),
         },
         {

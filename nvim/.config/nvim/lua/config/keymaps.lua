@@ -78,3 +78,82 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "Buf
 
 vim.keymap.set("n", "<leader>f.e", ":e .env<CR>", { desc = "Open .env file" })
 vim.keymap.set("n", "<leader>f.g", ":e .gitignore<CR>", { desc = "Open .gitignore file" })
+
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Normal mode from terminal mode'})
+
+vim.keymap.set("n", "gliam", function()
+  -- Prompt the user for the issue title
+  local title = vim.fn.input("GitLab Issue Title: ")
+
+  -- If the user cancels or enters an empty title, abort the operation
+  if title == "" then
+    print("Issue creation cancelled: No title provided.")
+    return
+  end
+
+  -- Initialize a table to store description lines
+  local description_lines = {}
+  local line_num = 1
+  local current_line = ""
+
+  -- Loop to collect multiple lines for the description
+  print("Enter GitLab Issue Description (empty line to finish):")
+  while true do
+    current_line = vim.fn.input(string.format("Line %d: ", line_num))
+    if current_line == "" then
+      -- User entered an empty line, so stop collecting description
+      break
+    else
+      table.insert(description_lines, current_line)
+      line_num = line_num + 1
+    end
+  end
+
+  -- Join the collected lines with newline characters
+  local description = table.concat(description_lines, "\n")
+
+  -- Escape the title to safely pass it as a command-line argument.
+  -- vim.fn.shellescape will correctly quote the string for the shell.
+  local escaped_title = vim.fn.shellescape(title)
+
+  -- Create a temporary file to store the description content.
+  -- This is the most robust way to handle multi-line strings and special characters.
+  local tmp_file_path = vim.fn.tempname()
+  local file = io.open(tmp_file_path, "w")
+
+  if file then
+    file:write(description)
+    file:close()
+  else
+    print("Error: Could not create temporary file for description.")
+    return
+  end
+
+  -- Construct the glab command.
+  -- We now include the --description flag and use shell command substitution
+  -- `$(cat <temp_file_path>)` to insert the content of the temporary file
+  -- as the argument for the description. This is robust for multi-line and special chars.
+  local cmd = string.format("glab issue create --assignee @me --title %s --description \"$(cat %s)\"",
+                            escaped_title, vim.fn.shellescape(tmp_file_path))
+
+  -- Inform the user that the command is being executed
+  print("Calling glab to create issue...")
+  -- Optional: For debugging, uncomment the next line to see the full command being executed
+  -- print("Executing command: " .. cmd)
+
+  -- Execute the glab command in a new terminal buffer.
+  -- The '!' prefix tells vim.cmd to run the command in the shell.
+  -- The output of the glab command will be displayed in a new buffer,
+  -- providing feedback on whether the issue was created successfully.
+  vim.cmd("!" .. cmd)
+
+  -- Clean up the temporary file after the command has executed.
+  -- This removes the temporary file from your system.
+  os.remove(tmp_file_path)
+
+  -- Provide a final message to the user
+  print("glab command executed. Check the new buffer for output.")
+end, {
+  desc = "Open new issue with me as assignee (multi-line description)" -- Updated description
+})
+
