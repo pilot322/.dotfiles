@@ -12,7 +12,7 @@ if [ -n "$TMUX" ]; then
   # The '-p 50' flag means the new pane will take approximately 50% of the width.
   tmux split-window -h
 
-  tmux send-keys 'nvim /tmp/temp' C-m
+  tmux send-keys 'nvim /tmp/prompt.yml' C-m
   #tmux send-keys 'n'
 fi
 

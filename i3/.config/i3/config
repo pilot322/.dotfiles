@@ -224,8 +224,8 @@ exec --no-startup-id setxkbmap -layout us,gr -option grp:alt_shift_toggle -optio
 
 exec --no-startup-id picom
 
-gaps inner 10
-gaps outer 10
+gaps inner 6
+gaps outer 2
 
 assign [class="main.py"] $ws9
 

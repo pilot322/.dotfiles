@@ -31,6 +31,14 @@ return {
         name = "content",
         path = "~/Vaults/Content/",
       },
+      {
+        name = "uni",
+        path = "~/Vaults/Uni/",
+      },
+      {
+        name = "projects",
+        path = "~/Vaults/Projects/",
+      },
     },
 
     -- see below for full list of options 👇

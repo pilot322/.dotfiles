@@ -166,3 +166,9 @@ export SSH_GOYROYNI=mixalis@172.20.9.91
 if [ -f "$HOME/.env_vars" ]; then
     . "$HOME/.env_vars"
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/mixalis/google-cloud-sdk/path.bash.inc' ]; then . '/home/mixalis/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/mixalis/google-cloud-sdk/completion.bash.inc' ]; then . '/home/mixalis/google-cloud-sdk/completion.bash.inc'; fi
