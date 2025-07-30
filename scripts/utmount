@@ -1,2 +1,2 @@
 #!/bin/bash
-fusermount -u ~/tempmount/
+fusermount -u -z ~/tempmount/

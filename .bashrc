@@ -172,3 +172,6 @@ if [ -f '/home/mixalis/google-cloud-sdk/path.bash.inc' ]; then . '/home/mixalis/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/mixalis/google-cloud-sdk/completion.bash.inc' ]; then . '/home/mixalis/google-cloud-sdk/completion.bash.inc'; fi
+
+alias sa='source activate'
+alias gac='git add . && git commit -m'
