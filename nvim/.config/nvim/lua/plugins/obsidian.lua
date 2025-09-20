@@ -17,30 +17,59 @@ return {
 
     -- see below for full list of optional dependencies 👇
   },
-  opts = {
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/Vaults/obsnotes/",
-      },
-      {
-        name = "work",
-        path = "~/Vaults/INNotes/",
-      },
-      {
-        name = "content",
-        path = "~/Vaults/Content/",
-      },
-      {
-        name = "uni",
-        path = "~/Vaults/Uni/",
-      },
-      {
-        name = "projects",
-        path = "~/Vaults/Projects/",
-      },
+  keys = {
+    { 
+      "<leader>ot", 
+      function()
+        local line = vim.api.nvim_get_current_line()
+        if line:match("^%s*- %[ %]") then
+          vim.cmd("s/- \\[ \\]/- [x]/")
+        elseif line:match("^%s*- %[x%]") then
+          vim.cmd("s/- \\[x\\]/- [ ]/")
+        elseif line:match("^%s*- ") then
+          vim.cmd("s/- /- [ ] /")
+        else
+          vim.cmd("normal! I- [ ] ")
+        end
+      end,
+      desc = "Obsidian toggle list item", 
+      mode = "n" 
     },
-
-    -- see below for full list of options 👇
+    { 
+      "<leader>ot", 
+      function()
+        vim.cmd("'<,'>s/^\\(\\s*\\)- \\[ \\]/\\1- [x]/e")
+        vim.cmd("'<,'>s/^\\(\\s*\\)- \\[x\\]/\\1- [ ]/e")
+        vim.cmd("'<,'>s/^\\(\\s*\\)- \\([^\\[]\\)/\\1- [ ] \\2/e")
+        vim.cmd("'<,'>s/^\\(\\s*\\)\\([^-]\\)/\\1- [ ] \\2/e")
+      end,
+      desc = "Obsidian toggle list item", 
+      mode = "v" 
+    },
   },
+  opts = function()
+    local workspaces = {}
+    local vaults_path = vim.fn.expand("~/Vaults")
+    
+    if vim.fn.isdirectory(vaults_path) == 1 then
+      local handle = vim.loop.fs_scandir(vaults_path)
+      if handle then
+        while true do
+          local name, type = vim.loop.fs_scandir_next(handle)
+          if not name then break end
+          
+          if type == "directory" then
+            table.insert(workspaces, {
+              name = name:lower(),
+              path = "~/Vaults/" .. name .. "/",
+            })
+          end
+        end
+      end
+    end
+    
+    return {
+      workspaces = workspaces,
+    }
+  end,
 }

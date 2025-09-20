@@ -5,8 +5,8 @@ vim.opt.langmap =
 
 vim.g.mapleader = " "
 
-vim.keymap.set("i", "jj", "<Esc>")
 
+vim.keymap.set("i", "jj", "<Esc>")
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
@@ -79,8 +79,16 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "Buf
 
 vim.keymap.set("n", "<leader>f.e", ":e .env<CR>", { desc = "Open .env file" })
 vim.keymap.set("n", "<leader>f.g", ":e .gitignore<CR>", { desc = "Open .gitignore file" })
+vim.keymap.set(
+  "n",
+  "<leader>f.n",
+  ":e .nvim.lua<CR>",
+  { desc = "Open .nvim.lua file for nvim project configuration ;)" }
+)
+vim.keymap.set("n", "<leader>f.d", ":e docker-compose.yml<CR>", { desc = "Open docker-compose.yml" })
+vim.keymap.set("n", "<leader>f.D", ":e Dockerfile<CR>", { desc = "Open Dockerfile" })
 
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Normal mode from terminal mode'})
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Normal mode from terminal mode" })
 
 vim.keymap.set("n", "gliam", function()
   -- Prompt the user for the issue title
@@ -134,8 +142,11 @@ vim.keymap.set("n", "gliam", function()
   -- We now include the --description flag and use shell command substitution
   -- `$(cat <temp_file_path>)` to insert the content of the temporary file
   -- as the argument for the description. This is robust for multi-line and special chars.
-  local cmd = string.format("glab issue create --assignee @me --title %s --description \"$(cat %s)\"",
-                            escaped_title, vim.fn.shellescape(tmp_file_path))
+  local cmd = string.format(
+    'glab issue create --assignee @me --title %s --description "$(cat %s)"',
+    escaped_title,
+    vim.fn.shellescape(tmp_file_path)
+  )
 
   -- Inform the user that the command is being executed
   print("Calling glab to create issue...")
@@ -155,10 +166,13 @@ vim.keymap.set("n", "gliam", function()
   -- Provide a final message to the user
   print("glab command executed. Check the new buffer for output.")
 end, {
-  desc = "Open new issue with me as assignee (multi-line description)" -- Updated description
+  desc = "Open new issue with me as assignee (multi-line description)", -- Updated description
 })
 
-
 vim.keymap.set("n", "<leader>px", ":!python ~/scripts/yml_to_xml.py<CR>")
+vim.keymap.set("n", "<leader>pf", "<leader>fF", { remap = true })
 
-vim.keymap.set("n", "<leader>pf", "<leader>ff")
+-- remove leader l for lazy. who the fuck uses this?
+vim.keymap.del("n", "<leader>l")
+
+vim.keymap.set('n', '<leader>lr', ':LspRestart<CR>')

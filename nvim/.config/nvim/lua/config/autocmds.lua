@@ -52,3 +52,4 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.api.nvim_buf_set_keymap(0, 'n', 'D', '<Cmd>lua NetrwTrash()<CR>', { noremap = true, silent = true })
   end,
 })
+

@@ -158,10 +158,7 @@ function y() {
 [[ -s "/home/mixalis/.gvm/scripts/gvm" ]] && source "/home/mixalis/.gvm/scripts/gvm"
 eval "$(zoxide init bash)"
 
-export SSH_TERAS=administrator@172.20.0.145
-export SSH_DAN=administrator@172.20.0.121
-export SSH_DONKEY=pkaddas@172.20.8.64
-export SSH_GOYROYNI=mixalis@172.20.9.91
+source /usr/share/bash-completion/completions/fzf
 
 if [ -f "$HOME/.env_vars" ]; then
     . "$HOME/.env_vars"
