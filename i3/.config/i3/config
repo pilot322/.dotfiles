@@ -231,6 +231,11 @@ assign [class="main.py"] $ws9
 
 # stacking workspaces
 
-exec --no-startup-id "i3-msg 'workspace 1; exec wezterm;'"
 exec --no-startup-id "i3-msg 'workspace 2; layout tabbed; exec firefox;'"
 exec --no-startup-id "i3-msg 'workspace 3; layout tabbed; exec nautilus;'"
+exec --no-startup-id "i3-msg 'workspace 4; layout tabbed;"
+
+for_window [class="discord"] move container to workspace 4, mark discord_win
+for_window [class="Ferdium"] move container to workspace 4, mark ferdium_win
+for_window [class="thunderbird-esr"] move container to workspace 4, mark thunder_win
+for_window [class="spotify"] move container to workspace 8, mark spotify_win

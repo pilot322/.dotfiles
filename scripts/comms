@@ -1,0 +1,5 @@
+#!/bin/bash
+
+discord &>/dev/null &
+ferdium &>/dev/null &
+thunderbird &>/dev/null &

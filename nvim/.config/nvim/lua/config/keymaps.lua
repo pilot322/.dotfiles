@@ -81,12 +81,32 @@ vim.keymap.set("n", "<leader>f.e", ":e .env<CR>", { desc = "Open .env file" })
 vim.keymap.set("n", "<leader>f.g", ":e .gitignore<CR>", { desc = "Open .gitignore file" })
 vim.keymap.set(
   "n",
-  "<leader>f.n",
+  "<leader>f.N",
   ":e .nvim.lua<CR>",
   { desc = "Open .nvim.lua file for nvim project configuration ;)" }
 )
+
+vim.keymap.set(
+  "n",
+  "<leader>f.n",
+  ":e nginx/nginx.conf<CR>",
+  { desc = "Open nginx conf inside nginx dir" }
+)
 vim.keymap.set("n", "<leader>f.d", ":e docker-compose.yml<CR>", { desc = "Open docker-compose.yml" })
 vim.keymap.set("n", "<leader>f.D", ":e Dockerfile<CR>", { desc = "Open Dockerfile" })
+
+vim.keymap.set("n", "<leader>pd", function()
+  require("fzf-lua").fzf_exec("find . -type d -not -path '*/.git/*' -not -name '.git'", {
+    prompt = "Directories> ",
+    actions = {
+      ["default"] = function(selected)
+        if selected and selected[1] then
+          vim.cmd.Ex(selected[1])
+        end
+      end,
+    },
+  })
+end, { desc = "Find directories and open in NetRW" })
 
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Normal mode from terminal mode" })
 
@@ -176,3 +196,22 @@ vim.keymap.set("n", "<leader>pf", "<leader>fF", { remap = true })
 vim.keymap.del("n", "<leader>l")
 
 vim.keymap.set('n', '<leader>lr', ':LspRestart<CR>')
+
+
+-- some cool stuff
+-- Remap for converting snake_case to camelCase in Visual mode
+-- CORRECTED: Visual snake_case to camelCase
+vim.keymap.set('v', '<leader>ctc', ':s/_\\(.\\)/\\U\\1/g<CR>', { desc = "Visual to camelCase" })
+
+-- CORRECTED: Visual camelCase to snake_case
+vim.keymap.set('v', '<leader>cts', ':s/\\([A-Z]\\)/_\\l\\1/g<CR>', { desc = "Visual to snake_case" })
+
+-- TypeScript/JavaScript arrow function helper
+-- When typing (( in insert mode, expand to () => with cursor inside parentheses
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+--   callback = function()
+--     vim.keymap.set("i", "(=", "() => <Left><Left><Left><Left><Left>", { buffer = true, desc = "Insert arrow function" })
+--     vim.keymap.set("i", "(}", "() => {}<Left><Left><Left><Left><Left><Left><Left>", { buffer = true, desc = "Insert arrow function" })
+--   end,
+-- })

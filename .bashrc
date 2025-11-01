@@ -172,3 +172,6 @@ if [ -f '/home/mixalis/google-cloud-sdk/completion.bash.inc' ]; then . '/home/mi
 
 alias sa='source activate'
 alias gac='git add . && git commit -m'
+alias lzd='lazydocker'
+
+alias tmuxhere='tmux new-ses -s "$(basename $(pwd))"'
