@@ -1,8 +1,17 @@
 return {
   {
     "folke/snacks.nvim",
+    keys = {
+      { "<leader>gs", false },
+    },
     opts = {
       explorer = {
+        enabled = false,
+      },
+      git = {
+        enabled = false,
+      },
+      gitbrowse = {
         enabled = false,
       },
       dashboard = {

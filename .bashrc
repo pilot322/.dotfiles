@@ -175,3 +175,5 @@ alias gac='git add . && git commit -m'
 alias lzd='lazydocker'
 
 alias tmuxhere='tmux new-ses -s "$(basename $(pwd))"'
+alias lzg='lazygit'
+export EDITOR=nvim

@@ -18,7 +18,20 @@ return {
         -- We remove our previous custom vtsls configuration.
         -- LazyVim's default setup for vtsls will handle regular.ts files,
         -- while the setting above ensures Volar handles.vue files correctly.
-        vtsls = {},
+        vtsls = {
+          settings = {
+            javascript = {
+              preferences = {
+                importModuleSpecifier = "non-relative",
+              },
+            },
+            typescript = {
+              preferences = {
+                importModuleSpecifier = "non-relative",
+              },
+            },
+          },
+        },
       },
     },
   },

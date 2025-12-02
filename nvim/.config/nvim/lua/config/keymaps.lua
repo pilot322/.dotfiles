@@ -5,7 +5,6 @@ vim.opt.langmap =
 
 vim.g.mapleader = " "
 
-
 vim.keymap.set("i", "jj", "<Esc>")
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
@@ -86,12 +85,7 @@ vim.keymap.set(
   { desc = "Open .nvim.lua file for nvim project configuration ;)" }
 )
 
-vim.keymap.set(
-  "n",
-  "<leader>f.n",
-  ":e nginx/nginx.conf<CR>",
-  { desc = "Open nginx conf inside nginx dir" }
-)
+vim.keymap.set("n", "<leader>f.n", ":e nginx/nginx.conf<CR>", { desc = "Open nginx conf inside nginx dir" })
 vim.keymap.set("n", "<leader>f.d", ":e docker-compose.yml<CR>", { desc = "Open docker-compose.yml" })
 vim.keymap.set("n", "<leader>f.D", ":e Dockerfile<CR>", { desc = "Open Dockerfile" })
 
@@ -101,13 +95,12 @@ vim.keymap.set("n", "<leader>pd", function()
     actions = {
       ["default"] = function(selected)
         if selected and selected[1] then
-          vim.cmd.Ex(selected[1])
+          vim.cmd.Oil(selected[1])
         end
       end,
     },
   })
 end, { desc = "Find directories and open in NetRW" })
-
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Normal mode from terminal mode" })
 
 vim.keymap.set("n", "gliam", function()
@@ -195,16 +188,19 @@ vim.keymap.set("n", "<leader>pf", "<leader>fF", { remap = true })
 -- remove leader l for lazy. who the fuck uses this?
 vim.keymap.del("n", "<leader>l")
 
-vim.keymap.set('n', '<leader>lr', ':LspRestart<CR>')
+vim.keymap.set("n", "<leader>lr", ":LspRestart<CR>")
 
-
+vim.keymap.set("i", "<C-k>.", function()
+  vim.api.nvim_put({ vim.fn.expand("%:t:r") }, "", false, true)
+end, { noremap = true, desc = "Insert filename without extension" })
+--
 -- some cool stuff
 -- Remap for converting snake_case to camelCase in Visual mode
 -- CORRECTED: Visual snake_case to camelCase
-vim.keymap.set('v', '<leader>ctc', ':s/_\\(.\\)/\\U\\1/g<CR>', { desc = "Visual to camelCase" })
+vim.keymap.set("v", "<leader>ctc", ":s/_\\(.\\)/\\U\\1/g<CR>", { desc = "Visual to camelCase" })
 
 -- CORRECTED: Visual camelCase to snake_case
-vim.keymap.set('v', '<leader>cts', ':s/\\([A-Z]\\)/_\\l\\1/g<CR>', { desc = "Visual to snake_case" })
+vim.keymap.set("v", "<leader>cts", ":s/\\([A-Z]\\)/_\\l\\1/g<CR>", { desc = "Visual to snake_case" })
 
 -- TypeScript/JavaScript arrow function helper
 -- When typing (( in insert mode, expand to () => with cursor inside parentheses
@@ -215,3 +211,4 @@ vim.keymap.set('v', '<leader>cts', ':s/\\([A-Z]\\)/_\\l\\1/g<CR>', { desc = "Vis
 --     vim.keymap.set("i", "(}", "() => {}<Left><Left><Left><Left><Left><Left><Left>", { buffer = true, desc = "Insert arrow function" })
 --   end,
 -- })
+--

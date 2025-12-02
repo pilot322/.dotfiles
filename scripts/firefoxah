@@ -1,0 +1,3 @@
+#!/bin/bash
+
+firefox -P "ahtida" -no-remote
