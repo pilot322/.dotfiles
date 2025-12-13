@@ -6,6 +6,25 @@ return {
     opts = {
       autoformat = false,
       servers = {
+        pyright = {
+          settings = {
+            pyright = {
+              disableOrganizeImports = true, -- let ruff handle this
+            },
+            python = {
+              analysis = {
+                autoImportCompletions = true,
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "workspace", -- indexes whole workspace, not just open files
+                typeCheckingMode = "basic",
+                diagnosticSeverityOverrides = {
+                  reportUndefinedVariable = "error", -- needed for import code actions
+                },
+              },
+            },
+          },
+        },
         ruff = {
           settings = {
             interpreter = { vim.fn.exepath("python3") or vim.fn.exepath("python") },
