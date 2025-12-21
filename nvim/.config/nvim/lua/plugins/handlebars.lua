@@ -1,12 +1,19 @@
+-- Add .handlebars extension to filetype detection
+vim.filetype.add({
+  extension = {
+    handlebars = "handlebars",
+  },
+})
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "glimmer" })
+        vim.list_extend(opts.ensure_installed, { "html" })
       end
-      -- Register glimmer parser for handlebars filetype
-      vim.treesitter.language.register("glimmer", "handlebars")
+      -- Use html parser for handlebars filetype (glimmer not available)
+      vim.treesitter.language.register("html", "handlebars")
     end,
   },
   {
