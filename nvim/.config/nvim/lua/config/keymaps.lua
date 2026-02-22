@@ -202,6 +202,10 @@ vim.keymap.set("v", "<leader>ctc", ":s/_\\(.\\)/\\U\\1/g<CR>", { desc = "Visual 
 -- CORRECTED: Visual camelCase to snake_case
 vim.keymap.set("v", "<leader>cts", ":s/\\([A-Z]\\)/_\\l\\1/g<CR>", { desc = "Visual to snake_case" })
 
+vim.keymap.set("n", "<leader>on", function()
+  vim.fn.jobstart({ "nautilus", vim.fn.getcwd() }, { detach = true })
+end, { desc = "Open Nautilus in working directory" })
+
 -- TypeScript/JavaScript arrow function helper
 -- When typing (( in insert mode, expand to () => with cursor inside parentheses
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -212,3 +216,7 @@ vim.keymap.set("v", "<leader>cts", ":s/\\([A-Z]\\)/_\\l\\1/g<CR>", { desc = "Vis
 --   end,
 -- })
 --
+
+local ai_git = require("config.ai.git")
+vim.keymap.set("n", "<leader>agp", ai_git.commit_and_push, { desc = "AI commit staged files and push" })
+vim.keymap.set("n", "<leader>agf", ai_git.group_commit_and_push, { desc = "AI group commit all changes and push" })

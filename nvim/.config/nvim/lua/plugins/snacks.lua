@@ -3,6 +3,7 @@ return {
     "folke/snacks.nvim",
     keys = {
       { "<leader>gs", false },
+      { "<leader>.", false },
     },
     opts = {
       explorer = {

@@ -195,7 +195,7 @@ config.keys = {
 		mods = "CTRL",
 		action = wezterm.action({
 			SpawnCommandInNewTab = {
-				args = { "bash", "-c", "source ~/.bashrc; ~/scripts/quick_question.sh" },
+				args = { "bash", "-c", "~/.dotfiles/scripts/nvim_quick_note.sh" },
 			},
 		}),
 	},

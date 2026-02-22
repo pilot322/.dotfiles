@@ -19,6 +19,15 @@ return {
 
     table.insert(opts.sources.providers.snippets.opts.search_paths, vim.fn.getcwd() .. "/.vscode")
 
+    -- 99 rules completion provider
+    opts.sources.providers["99"] = {
+      module = "custom.blink-99",
+      name = "99",
+    }
+
+    opts.sources.default = opts.sources.default or {}
+    table.insert(opts.sources.default, "99")
+
     return opts
   end,
 }

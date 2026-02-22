@@ -18,7 +18,7 @@ return {
         lsp_file_methods = {
           enabled = true,
           timeout_ms = 2000, -- longer timeout for large projects
-          autosave_changes = "unmodified", -- auto-save files modified by LSP
+          autosave_changes = true
         },
         -- Keymaps in oil buffer
         keymaps = {

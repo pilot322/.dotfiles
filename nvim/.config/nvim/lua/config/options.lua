@@ -2,7 +2,7 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 vim.o.exrc = true
-vim.o.secure = true 
+vim.o.secure = true
 
 vim.opt.guicursor = ""
 
@@ -46,7 +46,14 @@ vim.g.autoformat = false
 vim.opt.spell = false
 
 -- netrw tricks
-vim.g.netrw_rm_cmd = 'trash-put'
-vim.g.netrw_rmf_cmd = 'trash-put'
-vim.g.netrw_rmdir_cmd = 'trash-put'
+vim.g.netrw_rm_cmd = "trash-put"
+vim.g.netrw_rmf_cmd = "trash-put"
+vim.g.netrw_rmdir_cmd = "trash-put"
 vim.g.netrw_banner = 0
+
+vim.g.opencode_opts = {
+  provider = {
+    enabled = "tmux",
+    tmux = {},
+  },
+}

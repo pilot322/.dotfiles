@@ -176,4 +176,8 @@ alias lzd='lazydocker'
 
 alias tmuxhere='tmux new-ses -s "$(basename $(pwd))"'
 alias lzg='lazygit'
+alias opncode='opencode --port'
 export EDITOR=nvim
+
+# opencode
+export PATH=/home/mixalis/.opencode/bin:$PATH
