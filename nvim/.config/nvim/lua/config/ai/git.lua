@@ -19,11 +19,18 @@ local function git_cmd(args)
   return result
 end
 
-local function claude_haiku(prompt, context, callback)
+local function claude_haiku(prompt, context, on_success, on_error)
+  local function fail(reason)
+    vim.notify(reason, vim.log.levels.ERROR)
+    if on_error then
+      on_error()
+    end
+  end
+
   local tmp = vim.fn.tempname()
   local f = io.open(tmp, "w")
   if not f then
-    vim.notify("Failed to create temp file", vim.log.levels.ERROR)
+    fail("Failed to create temp file")
     return
   end
   f:write(context)
@@ -35,23 +42,27 @@ local function claude_haiku(prompt, context, callback)
     vim.fn.shellescape(tmp)
   )
 
+  local stdout_data = {}
+
   vim.fn.jobstart(cmd, {
     stdout_buffered = true,
     on_stdout = function(_, data)
-      local raw = vim.trim(table.concat(data, "\n"))
-      if raw ~= "" then
-        vim.schedule(function()
-          callback(raw)
-        end)
-      end
+      stdout_data = data
     end,
     on_exit = function(_, code)
       os.remove(tmp)
-      if code ~= 0 then
-        vim.schedule(function()
-          vim.notify("Claude command failed (exit code " .. code .. ")", vim.log.levels.ERROR)
-        end)
-      end
+      vim.schedule(function()
+        if code ~= 0 then
+          fail("Claude command failed (exit code " .. code .. ")")
+          return
+        end
+        local raw = vim.trim(table.concat(stdout_data, "\n"))
+        if raw == "" then
+          fail("Claude returned empty output")
+          return
+        end
+        on_success(raw)
+      end)
     end,
   })
 end
@@ -108,6 +119,7 @@ end
 
 local function open_review_buffer(groups, on_confirm)
   local buf = vim.api.nvim_create_buf(false, true)
+  vim.cmd("topleft vsplit")
   vim.api.nvim_set_current_buf(buf)
 
   vim.bo[buf].buftype = "nofile"
@@ -192,6 +204,28 @@ function M.commit_and_push()
     return
   end
 
+  local names_raw = vim.fn.system({ "git", "-C", root, "diff", "--cached", "--name-only" })
+  local staged_files = {}
+  for line in names_raw:gmatch("[^\n]+") do
+    table.insert(staged_files, line)
+  end
+  if #staged_files == 0 then
+    vim.notify("No staged file paths resolved", vim.log.levels.WARN)
+    return
+  end
+
+  -- Unstage now so an accidental `git add` during async message generation
+  -- can't sneak into this commit. We re-stage the captured paths on callback.
+  local reset_cmd = { "git", "-C", root, "reset", "HEAD", "--" }
+  for _, f in ipairs(staged_files) do
+    table.insert(reset_cmd, f)
+  end
+  local reset_result = vim.fn.system(reset_cmd)
+  if vim.v.shell_error ~= 0 then
+    vim.notify("Failed to unstage: " .. reset_result, vim.log.levels.ERROR)
+    return
+  end
+
   vim.notify("Generating commit message with Claude Haiku...", vim.log.levels.INFO)
 
   local prompt = "Read the following staged git diff and generate a single commit message following the Conventional Commits specification "
@@ -200,38 +234,74 @@ function M.commit_and_push()
     .. "ONLY return the commit message text. No markdown, no backticks, no quotes, no explanation."
 
   claude_haiku(prompt, diff, function(msg)
+    local add_cmd = { "git", "-C", root, "add", "-A", "--" }
+    for _, f in ipairs(staged_files) do
+      table.insert(add_cmd, f)
+    end
+    local add_result = vim.fn.system(add_cmd)
+    if vim.v.shell_error ~= 0 then
+      vim.notify("Re-staging failed: " .. add_result, vim.log.levels.ERROR)
+      open_unstaged_recovery_buffer(root, staged_files)
+      return
+    end
+
     vim.notify("Committing: " .. msg, vim.log.levels.INFO)
-    local result = vim.fn.system({ "git", "-C", root, "commit", "-m", msg })
+    local commit_cmd = { "git", "-C", root, "commit", "-m", msg, "--" }
+    for _, f in ipairs(staged_files) do
+      table.insert(commit_cmd, f)
+    end
+    local result = vim.fn.system(commit_cmd)
     if vim.v.shell_error ~= 0 then
       vim.notify("Commit failed: " .. result, vim.log.levels.ERROR)
       return
     end
     push()
+  end, function()
+    open_unstaged_recovery_buffer(root, staged_files)
   end)
 end
 
-function M.group_commit_and_push()
-  local root = git_root()
-  if not root then
-    return
-  end
-
+local function status_file_list(root)
   local status = vim.fn.system({ "git", "-C", root, "status", "--porcelain" })
   if vim.v.shell_error ~= 0 or status:match("^%s*$") then
-    vim.notify("No uncommitted changes found", vim.log.levels.WARN)
-    return
+    return nil, nil
   end
 
-  -- Extract exact file paths from git status to prevent hallucinated paths
-  local valid_files = {}
+  local files = {}
   for line in status:gmatch("[^\n]+") do
     -- porcelain format: XY filename  or  XY old -> new (renames)
     local file = line:sub(4)
     local renamed = file:match("^.+ -> (.+)$")
-    table.insert(valid_files, renamed or file)
+    table.insert(files, renamed or file)
+  end
+  return files, status
+end
+
+local function filter_status_to_files(status, valid_set)
+  local lines = {}
+  for line in status:gmatch("[^\n]+") do
+    local file = line:sub(4)
+    local renamed = file:match("^.+ -> (.+)$")
+    local resolved = renamed or file
+    if valid_set[resolved] then
+      table.insert(lines, line)
+    end
+  end
+  return table.concat(lines, "\n")
+end
+
+local function group_selected_files(root, valid_files, full_status)
+  local valid_set = {}
+  for _, f in ipairs(valid_files) do
+    valid_set[f] = true
   end
 
-  local diff = vim.fn.system({ "git", "-C", root, "diff" })
+  local status = filter_status_to_files(full_status, valid_set)
+  local diff_cmd = { "git", "-C", root, "diff", "--" }
+  for _, f in ipairs(valid_files) do
+    table.insert(diff_cmd, f)
+  end
+  local diff = vim.fn.system(diff_cmd)
 
   vim.notify("Grouping changes with Claude Haiku...", vim.log.levels.INFO)
 
@@ -268,11 +338,6 @@ function M.group_commit_and_push()
     end
 
     -- Validate and fix paths: drop any files not in the valid set
-    local valid_set = {}
-    for _, vf in ipairs(valid_files) do
-      valid_set[vf] = true
-    end
-
     for _, group in ipairs(groups) do
       if group.files then
         local cleaned = {}
@@ -301,6 +366,154 @@ function M.group_commit_and_push()
     end
 
     open_review_buffer(filtered, apply_groups_and_push)
+  end)
+end
+
+local function open_unstaged_recovery_buffer(root, files)
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.cmd("topleft vsplit")
+  vim.api.nvim_set_current_buf(buf)
+
+  vim.bo[buf].buftype = "nofile"
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].swapfile = false
+  vim.bo[buf].filetype = "markdown"
+
+  local lines = {
+    "# Unstaged after failure",
+    "# These files were unstaged for commit generation and were left unstaged.",
+    "# Delete any lines you do NOT want to re-stage.",
+    "# <leader>ac to re-stage kept files | q to close without re-staging",
+    "",
+  }
+  for _, f in ipairs(files) do
+    table.insert(lines, f)
+  end
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+  vim.keymap.set("n", "<leader>ac", function()
+    local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local selected = {}
+    for _, line in ipairs(content) do
+      if not line:match("^#") and line:match("%S") then
+        table.insert(selected, line)
+      end
+    end
+    vim.api.nvim_buf_delete(buf, { force = true })
+
+    if #selected == 0 then
+      vim.notify("No files to re-stage", vim.log.levels.WARN)
+      return
+    end
+
+    local add_cmd = { "git", "-C", root, "add", "-A", "--" }
+    for _, f in ipairs(selected) do
+      table.insert(add_cmd, f)
+    end
+    local result = vim.fn.system(add_cmd)
+    if vim.v.shell_error ~= 0 then
+      vim.notify("Re-staging failed: " .. result, vim.log.levels.ERROR)
+      return
+    end
+    vim.notify(string.format("Re-staged %d file(s)", #selected), vim.log.levels.INFO)
+  end, { buffer = buf, desc = "Re-stage listed files" })
+
+  vim.keymap.set("n", "q", function()
+    vim.api.nvim_buf_delete(buf, { force = true })
+  end, { buffer = buf, desc = "Close without re-staging" })
+end
+
+local function open_file_selection_buffer(files, on_confirm)
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.cmd("topleft vsplit")
+  vim.api.nvim_set_current_buf(buf)
+
+  vim.bo[buf].buftype = "nofile"
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].swapfile = false
+  vim.bo[buf].filetype = "markdown"
+
+  local lines = {
+    "# Select Files to Commit",
+    "# Delete lines for files you do NOT want to include.",
+    "# <leader>ac to accept | q to abort",
+    "",
+  }
+  for _, f in ipairs(files) do
+    table.insert(lines, f)
+  end
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+  vim.keymap.set("n", "<leader>ac", function()
+    local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local selected = {}
+    for _, line in ipairs(content) do
+      if not line:match("^#") and line:match("%S") then
+        table.insert(selected, line)
+      end
+    end
+    vim.api.nvim_buf_delete(buf, { force = true })
+
+    if #selected == 0 then
+      vim.notify("No files selected", vim.log.levels.WARN)
+      return
+    end
+    on_confirm(selected)
+  end, { buffer = buf, desc = "Accept file selection" })
+
+  vim.keymap.set("n", "q", function()
+    vim.api.nvim_buf_delete(buf, { force = true })
+    vim.notify("File selection aborted", vim.log.levels.INFO)
+  end, { buffer = buf, desc = "Abort file selection" })
+end
+
+function M.group_commit_and_push()
+  local root = git_root()
+  if not root then
+    return
+  end
+
+  local valid_files, status = status_file_list(root)
+  if not valid_files then
+    vim.notify("No uncommitted changes found", vim.log.levels.WARN)
+    return
+  end
+
+  group_selected_files(root, valid_files, status)
+end
+
+function M.select_group_commit_and_push()
+  local root = git_root()
+  if not root then
+    return
+  end
+
+  local valid_files, status = status_file_list(root)
+  if not valid_files then
+    vim.notify("No uncommitted changes found", vim.log.levels.WARN)
+    return
+  end
+
+  open_file_selection_buffer(valid_files, function(selected)
+    local valid_set = {}
+    for _, f in ipairs(valid_files) do
+      valid_set[f] = true
+    end
+    local kept = {}
+    for _, f in ipairs(selected) do
+      if valid_set[f] then
+        table.insert(kept, f)
+      else
+        vim.notify("Ignoring unknown path: " .. f, vim.log.levels.WARN)
+      end
+    end
+    if #kept == 0 then
+      vim.notify("No valid files selected", vim.log.levels.WARN)
+      return
+    end
+    group_selected_files(root, kept, status)
   end)
 end
 

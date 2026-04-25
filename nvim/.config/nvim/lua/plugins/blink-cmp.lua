@@ -1,6 +1,10 @@
 return {
   "saghen/blink.cmp",
   opts = function(_, opts)
+    opts.enabled = function()
+      return vim.g.blink_cmp_enabled ~= false and vim.bo.buftype ~= "prompt" and vim.b.completion ~= false
+    end
+
     opts.keymap = vim.tbl_deep_extend("force", opts.keymap or {}, {
       preset = "default",
       ["<Tab>"] = {},
@@ -20,13 +24,13 @@ return {
     table.insert(opts.sources.providers.snippets.opts.search_paths, vim.fn.getcwd() .. "/.vscode")
 
     -- 99 rules completion provider
-    opts.sources.providers["99"] = {
-      module = "custom.blink-99",
-      name = "99",
-    }
+    -- opts.sources.providers["99"] = {
+    --   module = "custom.blink-99",
+    --   name = "99",
+    -- }
 
-    opts.sources.default = opts.sources.default or {}
-    table.insert(opts.sources.default, "99")
+    -- opts.sources.default = opts.sources.default or {}
+    -- table.insert(opts.sources.default, "99")
 
     return opts
   end,

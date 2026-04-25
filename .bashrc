@@ -174,10 +174,20 @@ alias sa='source activate'
 alias gac='git add . && git commit -m'
 alias lzd='lazydocker'
 
-alias tmuxhere='tmux new-ses -s "$(basename $(pwd))"'
+tmuxhere() { tmux new-ses -s "${1:-$(basename "$PWD")}"; }
 alias lzg='lazygit'
 alias opncode='opencode --port'
 export EDITOR=nvim
 
 # opencode
 export PATH=/home/mixalis/.opencode/bin:$PATH
+
+eval "$(direnv hook bash)"
+
+alias stx='setxkbmap -layout us,gr -option grp:alt_shift_toggle -option caps:swapescape'
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

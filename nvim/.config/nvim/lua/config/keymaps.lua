@@ -206,6 +206,11 @@ vim.keymap.set("n", "<leader>on", function()
   vim.fn.jobstart({ "nautilus", vim.fn.getcwd() }, { detach = true })
 end, { desc = "Open Nautilus in working directory" })
 
+vim.keymap.set("n", "<leader>uu", function()
+  vim.g.blink_cmp_enabled = vim.g.blink_cmp_enabled == false
+  vim.notify("Autocomplete " .. (vim.g.blink_cmp_enabled and "enabled" or "disabled"))
+end, { desc = "Toggle autocomplete (blink.cmp)" })
+
 -- TypeScript/JavaScript arrow function helper
 -- When typing (( in insert mode, expand to () => with cursor inside parentheses
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -220,3 +225,9 @@ end, { desc = "Open Nautilus in working directory" })
 local ai_git = require("config.ai.git")
 vim.keymap.set("n", "<leader>agp", ai_git.commit_and_push, { desc = "AI commit staged files and push" })
 vim.keymap.set("n", "<leader>agf", ai_git.group_commit_and_push, { desc = "AI group commit all changes and push" })
+vim.keymap.set(
+  "n",
+  "<leader>ags",
+  ai_git.select_group_commit_and_push,
+  { desc = "AI select files, then group commit and push" }
+)
