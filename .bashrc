@@ -175,6 +175,8 @@ alias gac='git add . && git commit -m'
 alias lzd='lazydocker'
 
 tmuxhere() { tmux new-ses -s "${1:-$(basename "$PWD")}"; }
+alias tmuxai='tmux -L ai -f ~/.tmux.conf'
+alias tmuxn='tmux -L notes -f ~/.tmux.conf'
 alias lzg='lazygit'
 alias opncode='opencode --port'
 export EDITOR=nvim
