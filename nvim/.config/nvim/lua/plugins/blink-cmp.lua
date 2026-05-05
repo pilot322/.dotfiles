@@ -22,6 +22,7 @@ return {
     opts.sources.providers.snippets.opts.search_paths = opts.sources.providers.snippets.opts.search_paths or {}
 
     table.insert(opts.sources.providers.snippets.opts.search_paths, vim.fn.getcwd() .. "/.vscode")
+    -- obsidian.nvim auto-injects its blink sources when it loads (only inside ~/Vaults/).
 
     -- 99 rules completion provider
     -- opts.sources.providers["99"] = {
