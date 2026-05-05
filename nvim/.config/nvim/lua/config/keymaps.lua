@@ -222,6 +222,31 @@ end, { desc = "Toggle autocomplete (blink.cmp)" })
 -- })
 --
 
+vim.keymap.set("n", "<leader>@", function()
+  local path = vim.fn.expand("%:.")
+  local line = vim.fn.line(".")
+  local result = string.format("@%s , L%d", path, line)
+  vim.fn.setreg("+", result)
+  vim.notify("Copied: " .. result)
+end, { desc = "Copy file path with line number" })
+
+vim.keymap.set("v", "<leader>@", function()
+  local path = vim.fn.expand("%:.")
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+  local result
+  if start_line == end_line then
+    result = string.format("@%s , L%d", path, start_line)
+  else
+    result = string.format("@%s , L%d-%d", path, start_line, end_line)
+  end
+  vim.fn.setreg("+", result)
+  vim.notify("Copied: " .. result)
+end, { desc = "Copy file path with line range" })
+
 local ai_git = require("config.ai.git")
 vim.keymap.set("n", "<leader>agp", ai_git.commit_and_push, { desc = "AI commit staged files and push" })
 vim.keymap.set("n", "<leader>agf", ai_git.group_commit_and_push, { desc = "AI group commit all changes and push" })
