@@ -121,6 +121,19 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 end)
 
 -- =======================================================
+-- Opacity Toggle
+-- =======================================================
+wezterm.on("toggle-opacity", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+	if overrides.window_background_opacity == 1.0 then
+		overrides.window_background_opacity = 0.75
+	else
+		overrides.window_background_opacity = 1.0
+	end
+	window:set_config_overrides(overrides)
+end)
+
+-- =======================================================
 -- Your Original Configuration Settings
 -- =======================================================
 config.scrollback_lines = 10000
@@ -198,6 +211,11 @@ config.keys = {
 				args = { "bash", "-c", "~/.dotfiles/scripts/nvim_quick_note.sh" },
 			},
 		}),
+	},
+	{
+		key = "`",
+		mods = "CTRL|ALT",
+		action = wezterm.action.EmitEvent("toggle-opacity"),
 	},
 }
 
