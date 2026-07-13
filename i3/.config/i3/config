@@ -58,11 +58,19 @@ bindsym $mod+Shift+q kill
 # prtscrn
 bindsym Print exec flameshot gui
 
+# toggle whisrs
+bindsym $mod+m exec --no-startup-id whisrs toggle
+
 # notification close
 bindsym $mod+Shift+n exec dunstctl close
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -show combi
+
+exec --no-startup-id greenclip daemon
+# Greenclip clipboard manager
+bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard
+
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -241,6 +249,3 @@ for_window [class="discord"] move container to workspace 4, mark discord_win
 for_window [class="Ferdium"] move container to workspace 4, mark ferdium_win
 for_window [class="thunderbird-esr"] move container to workspace 4, mark thunder_win
 for_window [class="spotify"] move container to workspace 8, mark spotify_win
-
-# autorandr: sane screen settings
-exec --no-startup-id autorandr --change

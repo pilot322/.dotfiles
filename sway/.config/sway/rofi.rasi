@@ -1,6 +1,6 @@
-configuration{
-    modi: "drun,run,window";
-    combi-modes: "window,run,drun";
+configuration {
+    modi: "drun,run,sway-window:~/.config/sway/rofi-sway-windows";
+    combi-modes: "sway-window,run,drun";
     icon-theme: "Oranchelo";
     show-icons: true;
     terminal: "wezterm";
@@ -10,8 +10,7 @@ configuration{
     hide-scrollbar: true;
     display-drun: "   Apps ";
     display-run: "   Run ";
-    display-window: " 﩯  Window";
-    display-Network: " 󰤨  Network";
+    display-sway-window: "   Window ";
     sidebar-mode: true;
     matching: "normal";
     sort: true;

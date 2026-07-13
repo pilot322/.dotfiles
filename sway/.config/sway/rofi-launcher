@@ -1,0 +1,8 @@
+#!/bin/bash
+
+output=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused) | .output')
+
+exec rofi \
+    -m "$output" \
+    -config ~/.config/sway/rofi.rasi \
+    -show combi

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ ${ROFI_RETV:-0} == 1 && ${ROFI_INFO:-} =~ ^[0-9]+$ ]]; then
+    swaymsg "[con_id=$ROFI_INFO] focus" >/dev/null
+    exit
+fi
+
+swaymsg -t get_tree | jq -j '
+    .. | objects |
+    select(.type? == "con" and .pid? != null and .name? != null) |
+    (.name | gsub("[\\t\\n]"; " ")) +
+    "\u0000info\u001f" + (.id | tostring) + "\n"
+'

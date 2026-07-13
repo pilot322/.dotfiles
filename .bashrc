@@ -186,6 +186,9 @@ export EDITOR=nvim
 # opencode
 export PATH=/home/mixalis/.opencode/bin:$PATH
 
+# greenclip
+export PATH=/home/mixalis/.greenclip/bin:$PATH
+
 eval "$(direnv hook bash)"
 
 alias stx='setxkbmap -layout us,gr -option grp:alt_shift_toggle -option caps:swapescape'
@@ -195,3 +198,15 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+alias tmxc='tmux-coder'
+
+export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share/applications:$HOME/.local/share/flatpak/exports/share/applications"
+
+# pnpm
+export PNPM_HOME="/home/mixalis/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end

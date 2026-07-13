@@ -1,0 +1,165 @@
+set $mod Mod4
+set $term wezterm
+set $menu ~/.config/sway/rofi-launcher
+
+font pango:monospace 2
+
+# Keep the same two-monitor layout as the i3 xrandr setup. Disconnected
+# outputs are ignored by Sway.
+output eDP-1 mode 1920x1080 position 0 0 bg ~/Pictures/galaxy.jpg fill
+output HDMI-A-1 mode 1920x1080 position 1920 0 bg ~/Pictures/galaxy.jpg fill
+
+input type:keyboard {
+    xkb_layout us,gr
+    xkb_options grp:alt_shift_toggle,caps:swapescape
+}
+
+exec dex --autostart --environment sway
+exec nm-applet
+exec blueman-applet
+
+exec swayidle -w \
+    timeout 600 'swaylock -f -c 000000' \
+    before-sleep 'swaylock -f -c 000000'
+
+# Make the Wayland display available to portals for PipeWire screen sharing.
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# Store text and image clipboard changes. Clipboard history is opened with
+# Mod+c and copied back to the active Wayland clipboard.
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+floating_modifier $mod normal
+tiling_drag enable
+
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+q kill
+bindsym Print exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+m exec whisrs toggle
+bindsym $mod+Shift+n exec dunstctl close
+bindsym $mod+d exec $menu
+bindsym $mod+c exec cliphist list | fuzzel --dmenu --prompt="Clipboard > " | cliphist decode | wl-copy
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+default_border none
+client.focused #f71e6d #f71e6d #f71e6d #f71e6d
+
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+o exec ~/.config/sway/move-workspace-to-other-output
+
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit Sway?' -B 'Yes, exit Sway' 'swaymsg exit'
+
+mode "resize" {
+    bindsym j resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym semicolon resize grow width 10 px or 10 ppt
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+bar {
+    status_command i3status
+    font pango:monospace 10
+    colors {
+        background #222222CC
+        statusline #ddddddCC
+    }
+}
+
+gaps inner 6
+gaps outer 2
+
+assign [class="main.py"] $ws9
+assign [app_id="main.py"] $ws9
+
+exec swaymsg 'workspace 2; layout tabbed; exec firefox'
+exec swaymsg 'workspace 3; layout tabbed; exec nautilus'
+exec swaymsg 'workspace 4; layout tabbed'
+
+for_window [app_id="(?i)discord"] move container to workspace 4, mark discord_win
+for_window [class="(?i)discord"] move container to workspace 4, mark discord_win
+for_window [app_id="(?i)ferdium"] move container to workspace 4, mark ferdium_win
+for_window [class="(?i)ferdium"] move container to workspace 4, mark ferdium_win
+for_window [app_id="(?i)thunderbird-esr"] move container to workspace 4, mark thunder_win
+for_window [class="(?i)thunderbird-esr"] move container to workspace 4, mark thunder_win
+for_window [app_id="(?i)spotify"] move container to workspace 8, mark spotify_win
+for_window [class="(?i)spotify"] move container to workspace 8, mark spotify_win
+
+include /etc/sway/config.d/*

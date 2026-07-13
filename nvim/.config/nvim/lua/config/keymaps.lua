@@ -206,6 +206,8 @@ vim.keymap.set("n", "<leader>on", function()
   vim.fn.jobstart({ "nautilus", vim.fn.getcwd() }, { detach = true })
 end, { desc = "Open Nautilus in working directory" })
 
+vim.keymap.set("n", "<leader>op", '"+yig:q!<CR>', { remap = true })
+
 vim.keymap.set("n", "<leader>uu", function()
   vim.g.blink_cmp_enabled = vim.g.blink_cmp_enabled == false
   vim.notify("Autocomplete " .. (vim.g.blink_cmp_enabled and "enabled" or "disabled"))

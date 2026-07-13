@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -o pipefail
+
+list_commands() {
+    local command directory
+    local -a path_directories
+
+    IFS=: read -ra path_directories <<< "$PATH"
+    for directory in "${path_directories[@]}"; do
+        [[ -d "$directory" ]] || continue
+        for command in "$directory"/*; do
+            [[ -f "$command" && -x "$command" ]] && basename "$command"
+        done
+    done | sort -u
+}
+
+mode=$(printf 'Applications\nRun\nWindows\n' | fuzzel --dmenu --prompt='Mode > ')
+
+case "$mode" in
+    Applications)
+        exec fuzzel
+        ;;
+    Run)
+        command=$(list_commands | fuzzel --dmenu --prompt='Run > ')
+        [[ -n "$command" ]] && swaymsg exec -- "$command"
+        ;;
+    Windows)
+        window=$(swaymsg -t get_tree | jq -r '
+            .. | objects |
+            select(.type? == "con" and .pid? != null and .name? != null) |
+            [.id, (.name | gsub("[\\t\\n]"; " "))] | @tsv
+        ' | fuzzel --dmenu --prompt='Windows > ')
+        con_id=${window%%$'\t'*}
+        [[ "$con_id" =~ ^[0-9]+$ ]] && swaymsg "[con_id=$con_id] focus"
+        ;;
+esac
