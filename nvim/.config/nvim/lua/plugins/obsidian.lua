@@ -15,6 +15,32 @@ return {
   },
   keys = {
     {
+      "<leader>ow",
+      function()
+        local workspaces = {}
+        for _, workspace in ipairs(Obsidian.workspaces) do
+          if workspace.name ~= ".obsidian.wiki" then
+            table.insert(workspaces, {
+              user_data = workspace,
+              text = tostring(workspace),
+              filename = tostring(workspace.path),
+            })
+          end
+        end
+
+        Obsidian.picker.pick(workspaces, {
+          prompt_title = "Obsidian Vault",
+          callback = function(entry)
+            local workspace = entry.user_data
+            require("obsidian.workspace").set(workspace)
+            vim.cmd("tcd " .. vim.fn.fnameescape(tostring(workspace.root)))
+            vim.schedule(LazyVim.pick("files", { root = false }))
+          end,
+        })
+      end,
+      desc = "Switch Obsidian vault",
+    },
+    {
       "<leader>ot",
       function()
         local line = vim.api.nvim_get_current_line()

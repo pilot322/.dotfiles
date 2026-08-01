@@ -230,6 +230,15 @@ vim.keymap.set("n", "<leader>@", function()
   local result = string.format("@%s , L%d", path, line)
   vim.fn.setreg("+", result)
   vim.notify("Copied: " .. result)
+
+  if not vim.env.TMUX or vim.env.TMUX == "" then
+    return
+  end
+
+  vim.fn.system({ "tmux", "display-message", "-p", "-t", "{marked}", "#{pane_id}" })
+  if vim.v.shell_error == 0 then
+    vim.fn.system({ "tmux", "switch-client", "-t", "{marked}" })
+  end
 end, { desc = "Copy file path with line number" })
 
 vim.keymap.set("v", "<leader>@", function()
@@ -247,6 +256,15 @@ vim.keymap.set("v", "<leader>@", function()
   end
   vim.fn.setreg("+", result)
   vim.notify("Copied: " .. result)
+
+  if not vim.env.TMUX or vim.env.TMUX == "" then
+    return
+  end
+
+  vim.fn.system({ "tmux", "display-message", "-p", "-t", "{marked}", "#{pane_id}" })
+  if vim.v.shell_error == 0 then
+    vim.fn.system({ "tmux", "switch-client", "-t", "{marked}" })
+  end
 end, { desc = "Copy file path with line range" })
 
 local ai_git = require("config.ai.git")
