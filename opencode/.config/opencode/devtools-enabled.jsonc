@@ -7,8 +7,9 @@
       "command": [
         "npx",
         "-y",
-        "chrome-devtools-mcp@latest",
+        "chrome-devtools-mcp@1.6.0",
         "--isolated",
+        "--chromeArg=--class=chrome-devtools-mcp",
         "--experimentalPageIdRouting",
         "--no-usage-statistics",
         "--no-performance-crux",

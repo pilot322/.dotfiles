@@ -148,7 +148,10 @@ gaps outer 2
 
 assign [class="main.py"] $ws9
 assign [app_id="main.py"] $ws9
+assign [class="chrome-devtools-mcp"] $ws9
+assign [app_id="chrome-devtools-mcp"] $ws9
 
+exec swaymsg 'workspace 9; layout tabbed'
 exec swaymsg 'workspace 2; layout tabbed; exec firefox'
 exec swaymsg 'workspace 3; layout tabbed; exec nautilus'
 exec swaymsg 'workspace 4; layout tabbed'

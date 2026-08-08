@@ -6,10 +6,15 @@
             "command": [
                 "npx",
                 "-y",
-                "chrome-devtools-mcp@latest",
-                "--isolated"
+                "chrome-devtools-mcp@1.6.0",
+                "--isolated",
+                "--chromeArg=--class=chrome-devtools-mcp",
+                "--experimentalPageIdRouting",
+                "--no-usage-statistics",
+                "--no-performance-crux",
+                "--redact-network-headers"
             ],
-            "enabled": false
+            "enabled": true
         }
     }
 }
