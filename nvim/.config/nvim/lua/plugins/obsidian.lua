@@ -219,6 +219,15 @@ return {
     return {
       workspaces = workspaces,
       legacy_commands = false,
+      footer = {
+        enabled = false,
+      },
+      statusline = {
+        enabled = false,
+      },
+      ui = {
+        enable = false,
+      },
       completion = {
         nvim_cmp = false,
         blink = true,
