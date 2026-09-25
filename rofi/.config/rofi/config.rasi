@@ -13,7 +13,8 @@ configuration{
     display-window: " 﩯  Window";
     display-Network: " 󰤨  Network";
     sidebar-mode: true;
-    matching: "normal";
+    matching: "fuzzy";
+    sorting-method: "fzf";
     sort: true;
 }
 

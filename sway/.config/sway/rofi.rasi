@@ -12,7 +12,8 @@ configuration {
     display-run: "   Run ";
     display-sway-window: "   Window ";
     sidebar-mode: true;
-    matching: "normal";
+    matching: "fuzzy";
+    sorting-method: "fzf";
     sort: true;
 }
 

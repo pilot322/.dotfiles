@@ -8,6 +8,7 @@ fi
 swaymsg -t get_tree | jq -j '
     .. | objects |
     select(.type? == "con" and .pid? != null and .name? != null) |
-    (.name | gsub("[\\t\\n]"; " ")) +
+    ((.app_id // .window_properties.class // "unknown") | gsub("[\\t\\n]"; " ")) +
+    ": " + (.name | gsub("[\\t\\n]"; " ")) +
     "\u0000info\u001f" + (.id | tostring) + "\n"
 '

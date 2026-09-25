@@ -1,6 +1,7 @@
 set $mod Mod4
 set $term wezterm
 set $menu ~/.config/sway/rofi-launcher
+set $window_menu ~/.config/sway/rofi-launcher sway-window
 
 font pango:monospace 2
 
@@ -47,7 +48,9 @@ bindsym Print exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+m exec whisrs toggle
 bindsym $mod+Shift+n exec dunstctl close
 bindsym $mod+d exec $menu
+bindsym $mod+Shift+d exec $window_menu
 bindsym $mod+c exec cliphist list | fuzzel --dmenu --prompt="Clipboard > " | cliphist decode | wl-copy
+bindsym $mod+Shift+t input type:touchpad events toggle enabled disabled
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
