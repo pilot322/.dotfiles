@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "mixalis"
+  },
+  "keybinds": {
+    "leader": "tab",
+    "prompt.editor": "ctrl+g",
+    "model.dialog.favorite": "leader+f",
+    "agent.cycle": "shift+tab",
+    "variant.cycle": "alt+t"
+  },
+  "plugins": [
+    "file:///home/mixalis/.config/opencode/plugin/tmux-coder"
+  ],
+  "diffs": {
+    "wrap": "word"
+  },
+  "session": {
+    "sidebar": "hide",
+    "scrollbar": false,
+    "thinking": "show"
+  },
+  "animations": true
+}
