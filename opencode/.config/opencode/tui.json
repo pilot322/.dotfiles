@@ -7,8 +7,5 @@
     "leader": "tab",
     "agent_cycle": "shift+tab",
     "model_favorite_toggle": "leader+f"
-  },
-  "plugin": [
-    "file:///home/mixalis/.config/opencode/plugin/tmux-coder"
-  ]
+  }
 }
