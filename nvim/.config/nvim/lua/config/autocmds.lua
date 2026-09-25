@@ -5,6 +5,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  desc = "Open Markdown files in MarkText",
+  callback = function(event)
+    vim.keymap.set("n", "<leader>om", function()
+      local path = vim.api.nvim_buf_get_name(event.buf)
+      if path == "" then
+        vim.notify("Save the file before opening it in MarkText", vim.log.levels.WARN)
+        return
+      end
+
+      vim.fn.jobstart({ "flatpak", "run", "com.github.marktext.marktext", path }, { detach = true })
+    end, { buffer = event.buf, desc = "Open in MarkText" })
+  end,
+})
+
 -- Auto-reload files changed on disk (e.g. by AI coding tools) without manual :e
 vim.opt.autoread = true
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI", "TermClose", "TermLeave" }, {

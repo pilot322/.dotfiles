@@ -101,6 +101,50 @@ vim.keymap.set("n", "<leader>pd", function()
     },
   })
 end, { desc = "Find directories and open in NetRW" })
+
+local function insert_file_reference(started_in_insert)
+  local root = vim.fn.getcwd()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local winid = vim.api.nvim_get_current_win()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+
+  require("fzf-lua").files({
+    cwd = root,
+    prompt = "Reference file> ",
+    previewer = false,
+    file_icons = false,
+    git_icons = false,
+    actions = {
+      ["default"] = function(selected)
+        if not selected or not selected[1] or not vim.api.nvim_buf_is_valid(bufnr) then
+          return
+        end
+
+        local path = selected[1]:gsub("^%./", "")
+        local reference = (vim.bo[bufnr].filetype == "markdown" and "@" or "") .. path
+        vim.api.nvim_buf_set_text(bufnr, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2], { reference })
+
+        vim.defer_fn(function()
+          if not vim.api.nvim_win_is_valid(winid) or vim.api.nvim_win_get_buf(winid) ~= bufnr then
+            return
+          end
+
+          vim.api.nvim_set_current_win(winid)
+          local column = cursor[2] + #reference - 1
+          vim.api.nvim_win_set_cursor(winid, { cursor[1], column })
+          if started_in_insert then
+            vim.api.nvim_feedkeys("a", "n", false)
+          end
+        end, 20)
+      end,
+    },
+  })
+end
+
+vim.keymap.set("i", "@@", function()
+  insert_file_reference(true)
+end, { desc = "Insert @file reference" })
+
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Normal mode from terminal mode" })
 
 vim.keymap.set("n", "gliam", function()
