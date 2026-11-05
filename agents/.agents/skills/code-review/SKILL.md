@@ -16,7 +16,7 @@ The issue tracker should have been provided to you. If `docs/agents/issue-tracke
 
 ### 1. Pin the fixed point
 
-Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If they didn't specify one, ask for it.
+Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If they didn't specify one and this skill has been invoked as part of a larger code change, assume the starting point is the last commit. Otherwise, ask for it.
 
 Capture committed changes with `git diff <fixed-point>...HEAD`, staged and unstaged changes with `git diff HEAD`, and untracked paths with `git ls-files --others --exclude-standard` (read relevant untracked files). Also note the commits via `git log <fixed-point>..HEAD --oneline`.
 
