@@ -3,6 +3,8 @@ return {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
+      local selection = require("config.oil_selection")
+      selection.setup()
       require("oil").setup({
         default_file_explorer = true,
         columns = {
@@ -22,6 +24,11 @@ return {
         },
         -- Keymaps in oil buffer
         keymaps = {
+          ["<Tab>"] = { selection.toggle, mode = { "n", "x" }, desc = "Toggle file marks" },
+          ["<S-Tab>"] = { selection.clear, mode = { "n", "x" }, desc = "Clear file marks / pending move" },
+          ["<leader>ox"] = { selection.cut, mode = "n", desc = "Stage marked files to move" },
+          ["<leader>op"] = { selection.paste, mode = "n", desc = "Paste marked files" },
+          ["<leader>oc"] = { selection.clear, mode = "n", desc = "Clear file marks / pending move" },
           ["g?"] = "actions.show_help",
           ["<CR>"] = "actions.select",
           ["<C-v>"] = "actions.select_vsplit",
