@@ -25,10 +25,19 @@ return {
         -- Keymaps in oil buffer
         keymaps = {
           ["<Tab>"] = { selection.toggle, mode = { "n", "x" }, desc = "Toggle file marks" },
-          ["<S-Tab>"] = { selection.clear, mode = { "n", "x" }, desc = "Clear file marks / pending move" },
-          ["<leader>ox"] = { selection.cut, mode = "n", desc = "Stage marked files to move" },
-          ["<leader>op"] = { selection.paste, mode = "n", desc = "Paste marked files" },
-          ["<leader>oc"] = { selection.clear, mode = "n", desc = "Clear file marks / pending move" },
+          ["<S-Tab>"] = { selection.clear, mode = { "n", "x" }, desc = "Clear file marks / pending batch" },
+          ["d"] = {
+            function() return selection.key("d") end,
+            mode = "n", expr = true, desc = "Move marked files / delete",
+          },
+          ["y"] = {
+            function() return selection.key("y") end,
+            mode = "n", expr = true, desc = "Copy marked files / yank",
+          },
+          ["p"] = {
+            function() return selection.key("p") end,
+            mode = "n", expr = true, desc = "Paste marked files / put",
+          },
           ["g?"] = "actions.show_help",
           ["<CR>"] = "actions.select",
           ["<C-v>"] = "actions.select_vsplit",

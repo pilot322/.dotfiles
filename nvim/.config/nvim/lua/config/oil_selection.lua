@@ -27,7 +27,7 @@ local function redraw()
     if selection.ids[id] then
       vim.api.nvim_buf_set_extmark(selection.buf, ns, entry.row - 1, 0, {
         line_hl_group = "Visual",
-        virt_text = { { clipboard and "  ● cut" or "  ●", "DiagnosticInfo" } },
+        virt_text = { { clipboard and (clipboard.copy and "  ● copy" or "  ● cut") or "  ●", "DiagnosticInfo" } },
         virt_text_pos = "eol",
       })
     end
@@ -78,7 +78,7 @@ function M.toggle()
   redraw()
 end
 
-function M.cut()
+local function stage(copy)
   if clipboard then
     return notify("Paste or clear the pending batch first", vim.log.levels.WARN)
   end
@@ -86,7 +86,7 @@ function M.cut()
     return notify("Mark files with Tab first", vim.log.levels.WARN)
   end
   if vim.bo[selection.buf].modified then
-    return notify("Save existing Oil edits before cutting marked files", vim.log.levels.WARN)
+    return notify("Save existing Oil edits before staging marked files", vim.log.levels.WARN)
   end
   local current, batch = entries(selection.buf), {}
   for id in pairs(selection.ids) do
@@ -101,14 +101,37 @@ function M.cut()
   table.sort(batch, function(a, b)
     return current[a.id].row < current[b.id].row
   end)
+  batch.copy = copy
   clipboard = batch
   redraw()
-  notify(("Staged %d files to move; navigate and press <leader>op"):format(#batch))
+  notify(("Staged %d files to %s; navigate and press p"):format(#batch, copy and "copy" or "move"))
+end
+
+function M.cut()
+  stage(false)
+end
+
+function M.copy()
+  stage(true)
+end
+
+-- Expression mappings return commands so buffer edits happen outside expression-map textlock.
+function M.key(key)
+  local action
+  if key == "p" then
+    action = clipboard and "paste"
+  elseif clipboard or (selection and next(selection.ids)) then
+    action = key == "d" and "cut" or "copy"
+  end
+  if action then
+    return ('<Cmd>lua require("config.oil_selection").%s()<CR>'):format(action)
+  end
+  return key
 end
 
 function M.paste()
   if not clipboard then
-    return notify("No pending move", vim.log.levels.WARN)
+    return notify("No pending move or copy", vim.log.levels.WARN)
   end
   local src, dest = selection.buf, vim.api.nvim_get_current_buf()
   if not vim.api.nvim_buf_is_loaded(src) then
@@ -117,7 +140,7 @@ function M.paste()
   end
   local oil = require("oil")
   if not oil.get_current_dir(dest) or not oil.get_current_dir(src) then
-    return notify("Moving marked files is supported only between local Oil directories", vim.log.levels.WARN)
+    return notify("Marked files are supported only between local Oil directories", vim.log.levels.WARN)
   end
   if oil.get_current_dir(src) == oil.get_current_dir(dest) then
     return notify("Choose a different destination directory", vim.log.levels.WARN)
@@ -137,7 +160,7 @@ function M.paste()
     local source_path = oil.get_current_dir(src) .. item.name .. "/"
     local destination_path = oil.get_current_dir(dest)
     if destination_path:sub(1, #source_path) == source_path then
-      return notify("Cannot move a directory into itself: " .. item.name, vim.log.levels.WARN)
+      return notify("Cannot move or copy a directory into itself: " .. item.name, vim.log.levels.WARN)
     end
     if vim.uv.fs_lstat(oil.get_current_dir(dest) .. item.name) then
       return notify("Destination already contains " .. item.name, vim.log.levels.WARN)
@@ -149,12 +172,15 @@ function M.paste()
   table.sort(rows, function(a, b)
     return a > b
   end)
-  for _, row in ipairs(rows) do
-    vim.api.nvim_buf_set_lines(src, row - 1, row, false, {})
+  if not clipboard.copy then
+    for _, row in ipairs(rows) do
+      vim.api.nvim_buf_set_lines(src, row - 1, row, false, {})
+    end
   end
   local count = #clipboard
+  local operation = clipboard.copy and "copies" or "moves"
   M.clear()
-  notify(("Pasted %d files; :w to review and apply the moves"):format(count))
+  notify(("Pasted %d files; :w to review and apply the %s"):format(count, operation))
 end
 
 function M.setup()
@@ -164,7 +190,7 @@ function M.setup()
     callback = function(event)
       if selection and event.buf == selection.buf then
         M.clear()
-        notify("Source buffer closed; cleared file marks and pending move")
+        notify("Source buffer closed; cleared file marks and pending batch")
       end
     end,
   })
