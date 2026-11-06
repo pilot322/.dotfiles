@@ -76,7 +76,6 @@ function M.toggle()
     vim.cmd.normal({ esc, bang = true })
   end
   redraw()
-  vim.api.nvim_win_set_cursor(0, { math.min(last + 1, vim.api.nvim_buf_line_count(buf)), 0 })
 end
 
 function M.cut()
